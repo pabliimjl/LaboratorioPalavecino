@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Obras Sociales - Laboratorio Bioquímico Palavecino</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .nav-link {
+            display: block;
+            width: 100%;
+            padding: 0.5rem 0.75rem;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .nav-link:hover {
+            background-color: #059669;
+            color: #ecfdf5;
+        }
+        .nav-link-active {
+            background-color: #047857;
+            color: #ecfdf5;
+            font-weight: 600;
+        }
+        /* Burger slide */
+        #mainMenuMobile {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        #mainMenuMobile.menu-open {
+            max-height: 400px;
+        }
+        .aos {
+            opacity: 0;
+            transform: translateY(32px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .aos.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .aos-left {
+            opacity: 0;
+            transform: translateX(-40px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .aos-left.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 leading-relaxed">
+    <header class="sticky top-0 z-50 bg-slate-900/90 backdrop-blur-md border-b border-slate-700">
+        <nav class="container mx-auto px-4 py-4 flex items-center justify-between">
+            <a href="main.html" class="flex items-center gap-3">
+                <img src="img/logo.png" alt="Logo Laboratorio Palavecino" class="w-1/4 h-auto rounded-lg object-contain border border-slate-300 bg-white p-1" />
+            </a>
+            <button id="menuToggle" class="md:hidden text-slate-100 focus:outline-none">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
+            <ul id="mainMenu" class="hidden md:flex gap-8 text-sm font-medium whitespace-nowrap">
+                <li><a href="main.html#inicio" class="nav-link">Inicio</a></li>
+                <li><a href="resultados.html" class="nav-link">Resultados</a></li>
+                <li><a href="main.html#especialidades" class="nav-link">Especialidades</a></li>
+                <li><a href="ooss.html" class="nav-link nav-link-active">Obras sociales</a></li>
+                <li><a href="contacto.html" class="nav-link">Contacto</a></li>
+            </ul>
+        </nav>
+        <div id="mainMenuMobile" class="md:hidden absolute top-full left-0 w-full z-50 bg-slate-800 border-t border-slate-700" style="max-height:0;overflow:hidden">
+            <ul class="flex flex-col p-4 gap-2 text-sm font-medium">
+                <li><a href="main.html#inicio" class="nav-link">Inicio</a></li>
+                <li><a href="resultados.html" class="nav-link">Resultados</a></li>
+                <li><a href="main.html#especialidades" class="nav-link">Especialidades</a></li>
+                <li><a href="ooss.html" class="nav-link nav-link-active">Obras sociales</a></li>
+                <li><a href="contacto.html" class="nav-link">Contacto</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-16">
+        <h1 class="text-3xl sm:text-5xl font-black text-slate-200 mb-6 aos">Obras Sociales</h1>
+        <p class="text-slate-300 mb-4 aos" style="transition-delay:0.1s">Aquí presentamos las obras sociales con las que trabajamos y los acuerdos vigentes. Esta página puede extenderse con un listado de convenios, planes cubiertos y formas de facturación.</p>
+        <ul class="aos-left list-disc list-inside space-y-2 text-slate-300" style="transition-delay:0.2s">
+            <li>Medicus</li>
+            <li>Medifé</li>
+            <li>IOSFA</li>
+            <li>IOMA</li>
+            <li>Osecac</li>
+            <li>PAMI</li>
+            <li>Swiss Medical</li>
+            <li>Galeno</li>
+            <li>OSDE</li>
+            <li>AVALIAN – ACA SALUD</li>
+            <li>CASA – CAJA DE ABOGADOS</li>
+            <li>CENTRO MEDICO PUEYRREDON INTERIOR</li>
+            <li>CIMA</li>
+            <li>DASUTEN</li>
+            <li>DASMI</li>
+            <li>GALENO ARGENTINA S.A.</li>
+            <li>GRUPO SAN NICOLAS S.R.L.</li>
+            <li>GUINCHEROS</li>
+            <li>JERARQUICOS SALUD</li>
+            <li>LUIS PASTEUR</li>
+            <li>MUTUAL FEDERADA 25 DE JUNIO</li>
+            <li>OSAPM</li>
+            <li>COMEI</li>
+            <li>OSPIA</li>
+            <li>OSPERYHRA</li>
+            <li>OSPEDYC</li>
+            <li>OSPPCYQ</li>
+            <li>OSMM MARINA MERCANTE</li>
+            <li>OSPLAD</li>
+            <li>FATFA – PERSONAL DE FARMACIA</li>
+            <li>OSIAD – PERSONAL DE LA INDUSTRIA ACEITERA</li>
+            <li>OMINT</li>
+            <li>OPEGYPE</li>
+            <li>OSDIPP</li>
+            <li>OSECAC</li>
+            <li>OSMATA</li>
+            <li>OSPATCA</li>
+            <li>OSPIP (PLASTICOS)</li>
+            <li>OSPM MARITIMOS</li>
+            <li>OSPRERA</li>
+            <li>OSSEG</li>
+            <li>PATRONES DE CABOTAJE</li>
+            <li>PREVENCION SALUD S.A.</li>
+            <li>QUIMICOS Y PETROQUIMICOS (ZARATE CAMPANA)</li>
+            <li>SANCOR</li>
+            <li>SCIS S.A</li>
+            <li>SISTEMA INTEGRAL MUTUAL ARGENTINO</li>
+            <li>STAFF MEDICO S.A.</li>
+            <li>SWISS MEDICAL INTERIOR</li>
+            <li>UNION PERSONAL</li>
+            <li>WILLIAM HOPE</li>
+        </ul>
+    </main>
+
+    <footer class="bg-slate-900 border-t border-slate-700 py-6">
+        <div class="container mx-auto px-4 text-center text-sm text-slate-400">
+            © 2026 Laboratorio Palavecino - Todos los derechos reservados
+        </div>
+    </footer>
+
+    <script>
+        // Scroll animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.aos, .aos-left, .aos-right').forEach(el => observer.observe(el));
+        const menuToggle = document.getElementById('menuToggle');
+        const menuMobile = document.getElementById('mainMenuMobile');
+        menuToggle.addEventListener('click', () => {
+            const isOpen = menuMobile.style.maxHeight && menuMobile.style.maxHeight !== '0px';
+            menuMobile.style.maxHeight = isOpen ? '0' : '400px';
+        });
+    </script>
+</body>
+</html>
