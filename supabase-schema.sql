@@ -75,3 +75,22 @@ create policy anon_select_results
 insert into storage.buckets (id, name, public)
 values ('resultados-pdf', 'resultados-pdf', false)
 on conflict (id) do nothing;
+
+-- Politica insert en resultados para anon
+drop policy if exists anon_insert_results on public.results;
+create policy anon_insert_results
+    on public.results
+    for insert
+    to anon
+    with check (true);
+
+-- Politicas de Storage para el bucket resultados-pdf
+drop policy if exists "anon_insert_storage_resultados" on storage.objects;
+create policy "anon_insert_storage_resultados"
+    on storage.objects for insert to anon
+    with check (bucket_id = 'resultados-pdf');
+
+drop policy if exists "anon_select_storage_resultados" on storage.objects;
+create policy "anon_select_storage_resultados"
+    on storage.objects for select to anon
+    using (bucket_id = 'resultados-pdf');
