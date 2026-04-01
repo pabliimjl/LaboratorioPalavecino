@@ -3,15 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Laboratorio Bioquímico Palavecino</title>
+    <title>Laboratorio de Análisis Clinicos Palavecino</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        :root {
+            color-scheme: light;
+        }
+
+        body {
+            background:
+                radial-gradient(circle at top left, rgba(16, 185, 129, 0.14), transparent 30%),
+                linear-gradient(180deg, #f0fdf4 0%, #f8fafc 42%, #ecfdf5 100%);
+            color: #0f172a;
+        }
+
         #especialidades .grid > div:hover {
-            background-color: #059669; /* emerald-600 */
-            border-color: #10b981; /* emerald-500 */
+            background-color: #ecfdf5;
+            border-color: #34d399;
+            transform: translateY(-4px);
+            box-shadow: 0 18px 40px rgba(16, 185, 129, 0.16);
         }
         #especialidades .grid > div:hover h3 {
-            color: #ecfdf5; /* slate 50 */
+            color: #064e3b;
         }
 
         /* Animaciones scroll */
@@ -46,16 +59,19 @@
             display: block;
             width: 100%;
             padding: 0.5rem 0.75rem;
-            transition: background-color 0.3s, color 0.3s;
+            border-radius: 0.75rem;
+            color: #334155;
+            transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
         }
         .nav-link:hover {
-            background-color: #059669;
-            color: #ecfdf5;
+            background-color: #d1fae5;
+            color: #065f46;
         }
         .nav-link-active {
-            background-color: #047857;
-            color: #ecfdf5;
+            background-color: #059669;
+            color: #f8fafc;
             font-weight: 600;
+            box-shadow: 0 10px 24px rgba(5, 150, 105, 0.2);
         }
         /* Burger slide */
         #mainMenuMobile {
@@ -68,28 +84,30 @@
         }
     </style>
 </head>
-<body class="bg-slate-950 text-slate-100 leading-relaxed">
-    <header class="sticky top-0 z-50 bg-slate-900/90 backdrop-blur-md border-b border-slate-700">
-        <nav class="container mx-auto px-4 py-4 flex items-stretch md:items-center justify-between">
+<body class="text-slate-800 leading-relaxed">
+    <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-emerald-100 shadow-sm shadow-emerald-100/60">
+        <nav class="container mx-auto px-4 py-0 flex items-stretch md:items-center justify-between">
             <a href="#" class="flex items-center w-[85%] h-24 md:h-auto md:w-auto">
-                <img src="img/logo.png" alt="Logo Laboratorio Palavecino" class="w-[calc(100%+4px)] md:w-1/2 -mr-[4px] md:mr-0 h-full md:h-auto rounded-l-lg rounded-r-none md:rounded-lg object-contain border-0 md:border md:border-slate-300 bg-white p-1" />
+                <img src="img/logo.png" alt="Logo Laboratorio Palavecino" class="w-[calc(100%+4px)] md:w-1/2 -mr-[4px] md:mr-0 h-full md:h-auto rounded-l-lg rounded-r-none md:rounded-lg object-contain bg-white" />
             </a>
-            <button id="menuToggle" class="md:hidden -ml-[3px] w-[15%] h-24 flex items-center justify-center text-slate-900 focus:outline-none bg-white border-0 rounded-r-md rounded-l-none">
+            <button id="menuToggle" class="md:hidden -ml-[3px] w-[15%] h-24 flex items-center justify-center text-emerald-900 focus:outline-none bg-emerald-50 border border-emerald-200 rounded-r-md rounded-l-none">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
             </button>
             <ul id="mainMenu" class="hidden md:flex gap-8 text-sm font-medium whitespace-nowrap">
-                <li><a href="#inicio" class="nav-link">Inicio</a></li>
+                <li><a href="#inicio" class="nav-link nav-link-active">Inicio</a></li>
+                <li><a href="turnos.html" class="nav-link">Turnos</a></li>
                 <li><a href="resultados.html" class="nav-link">Resultados</a></li>
                 <li><a href="#especialidades" class="nav-link">Especialidades</a></li>
                 <li><a href="ooss.html" class="nav-link">Obras sociales</a></li>
                 <li><a href="contacto.html" class="nav-link">Contacto</a></li>
             </ul>
         </nav>
-        <div id="mainMenuMobile" class="md:hidden absolute top-full left-0 w-full z-50 bg-slate-800 border-t border-slate-700" style="max-height:0;overflow:hidden">
+        <div id="mainMenuMobile" class="md:hidden absolute top-full left-0 w-full z-50 bg-white/95 border-t border-emerald-100 shadow-lg shadow-emerald-100/60" style="max-height:0;overflow:hidden">
             <ul class="flex flex-col p-4 gap-2 text-sm font-medium">
-                <li><a href="#inicio" class="nav-link">Inicio</a></li>
+                <li><a href="#inicio" class="nav-link nav-link-active">Inicio</a></li>
+                <li><a href="turnos.html" class="nav-link">Turnos</a></li>
                 <li><a href="resultados.html" class="nav-link">Resultados</a></li>
                 <li><a href="#especialidades" class="nav-link">Especialidades</a></li>
                 <li><a href="ooss.html" class="nav-link">Obras sociales</a></li>
@@ -100,35 +118,42 @@
 
     <main class="space-y-24">
         <section id="inicio" class="min-h-[calc(100vh-96px)] flex items-center bg-[url('https://images.unsplash.com/photo-1581092795360-7716e4d23f10?auto=format&fit=crop&w=1500&q=80')] bg-cover bg-center relative">
-            <div class="absolute inset-0 bg-slate-950/70"></div>
+            <div class="absolute inset-0 bg-gradient-to-r from-emerald-50/95 via-white/92 to-emerald-100/80"></div>
             <div class="container mx-auto z-10 px-4 py-20 text-center">
-                <h1 class="text-4xl sm:text-6xl font-black text-slate-200 mb-6">Excelencia en análisis clínicos de referencia</h1>
-                <p class="max-w-2xl mx-auto text-lg sm:text-xl text-slate-100/90 mb-8">Laboratorio Palavecino certifica resultados con alto estándar de calidad para muestras clínicas y de I+D.</p>
-                <div class="mx-auto flex flex-wrap justify-center gap-4">
-                    <a href="contacto.html" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold py-2 px-5 rounded-lg">Contacto</a>
-                    <a href="#turnos" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold py-2 px-5 rounded-lg">Turnos</a>
-                    <a href="resultados.html" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold py-2 px-5 rounded-lg">Resultados</a>
+                <div class="max-w-4xl mx-auto rounded-[2rem] border border-white/80 bg-white/75 px-6 py-12 shadow-2xl shadow-emerald-100/70 backdrop-blur-sm sm:px-10">
+                    <span class="inline-flex items-center rounded-full border border-emerald-200 bg-emerald-50 px-4 py-1 text-sm font-semibold uppercase tracking-[0.2em] text-emerald-800">Calidad y confianza</span>
+                    <h1 class="mt-6 text-4xl sm:text-6xl font-black text-slate-900 mb-6">Excelencia en análisis clínicos de referencia</h1>
+                    <p class="max-w-2xl mx-auto text-lg sm:text-xl text-slate-700 mb-8">Laboratorio Palavecino certifica resultados con alto estándar de calidad para muestras clínicas y de I+D.</p>
+                    <div class="mx-auto flex flex-wrap justify-center gap-4">
+                        <a href="contacto.html" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 px-6 rounded-xl shadow-lg shadow-emerald-200 transition-colors">Contacto</a>
+                        <a href="turnos.html" class="bg-white hover:bg-emerald-50 text-emerald-900 font-bold py-2.5 px-6 rounded-xl border border-emerald-200 shadow-sm transition-colors">Turnos</a>
+                        <a href="resultados.html" class="bg-white hover:bg-emerald-50 text-emerald-900 font-bold py-2.5 px-6 rounded-xl border border-emerald-200 shadow-sm transition-colors">Resultados</a>
+                    </div>
                 </div>
             </div>
         </section>
 
 
-        <section id="especialidades" class="bg-slate-900/80 py-16">
+        <section id="especialidades" class="py-16">
             <div class="container mx-auto px-4">
-                <h2 class="text-3xl font-bold text-slate-200 mb-8 aos">Especialidades</h2>
-                <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                        <div class="aos p-6 rounded-xl bg-slate-800 border border-slate-700 shadow-inner hover:bg-emerald-700 hover:border-emerald-500 transition-colors duration-300" style="transition-delay:0.05s"><h3 class="text-xl font-semibold text-slate-300 mb-2">Marcadores Tumorales</h3></div>
-                        <div class="aos p-6 rounded-xl bg-slate-800 border border-slate-700 shadow-inner hover:bg-emerald-700 hover:border-emerald-500 transition-colors duration-300" style="transition-delay:0.1s"><h3 class="text-xl font-semibold text-slate-300 mb-2">Endocrinología, Metabolismo y Nutrición</h3></div>
-                    <div class="aos p-6 rounded-xl bg-slate-800 border border-slate-700 shadow-inner" style="transition-delay:0.15s"><h3 class="text-xl font-semibold text-slate-300 mb-2">Bacteriología</h3></div>
-                    <div class="aos p-6 rounded-xl bg-slate-800 border border-slate-700 shadow-inner" style="transition-delay:0.2s"><h3 class="text-xl font-semibold text-slate-300 mb-2">Oncología</h3></div>
-                    <div class="aos p-6 rounded-xl bg-slate-800 border border-slate-700 shadow-inner" style="transition-delay:0.25s"><h3 class="text-xl font-semibold text-slate-300 mb-2">Cardiología</h3></div>
-                    <div class="aos p-6 rounded-xl bg-slate-800 border border-slate-700 shadow-inner" style="transition-delay:0.3s"><h3 class="text-xl font-semibold text-slate-300 mb-2">Marcadores Biológicos</h3></div>
-                    <div class="aos p-6 rounded-xl bg-slate-800 border border-slate-700 shadow-inner" style="transition-delay:0.35s"><h3 class="text-xl font-semibold text-slate-300 mb-2">Inmunología</h3></div>
-                    <div class="aos p-6 rounded-xl bg-slate-800 border border-slate-700 shadow-inner" style="transition-delay:0.4s"><h3 class="text-xl font-semibold text-slate-300 mb-2">Alergias</h3></div>
-                    <div class="aos p-6 rounded-xl bg-slate-800 border border-slate-700 shadow-inner" style="transition-delay:0.45s"><h3 class="text-xl font-semibold text-slate-300 mb-2">Fertilidad</h3></div>
-                    <div class="aos p-6 rounded-xl bg-slate-800 border border-slate-700 shadow-inner" style="transition-delay:0.5s"><h3 class="text-xl font-semibold text-slate-300 mb-2">Reumatología</h3></div>
-                    <div class="aos p-6 rounded-xl bg-slate-800 border border-slate-700 shadow-inner" style="transition-delay:0.55s"><h3 class="text-xl font-semibold text-slate-300 mb-2">Pediatría</h3></div>
-                    <div class="aos p-6 rounded-xl bg-slate-800 border border-slate-700 shadow-inner" style="transition-delay:0.6s"><h3 class="text-xl font-semibold text-slate-300 mb-2">Micología</h3></div>
+                <div class="mb-8 aos">
+                    <span class="inline-flex rounded-full border border-emerald-200 bg-white px-4 py-1 text-sm font-semibold text-emerald-800 shadow-sm">Servicios</span>
+                    <h2 class="mt-4 text-3xl font-bold text-slate-900">Especialidades</h2>
+                    <p class="mt-3 max-w-2xl text-slate-600">Una grilla clara, legible y orientada a lectura rápida para que cada área médica se identifique sin esfuerzo.</p>
+                </div>
+                <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 items-stretch">
+                        <div class="aos flex min-h-[112px] items-center p-6 rounded-2xl bg-white border border-emerald-100 shadow-lg shadow-emerald-100/40 transition-all duration-300" style="transition-delay:0.05s"><h3 class="text-xl font-semibold text-slate-800">Marcadores Tumorales</h3></div>
+                        <div class="aos flex min-h-[112px] items-center p-6 rounded-2xl bg-white border border-emerald-100 shadow-lg shadow-emerald-100/40 transition-all duration-300" style="transition-delay:0.1s"><h3 class="text-xl font-semibold text-slate-800">Endocrinología, Metabolismo y Nutrición</h3></div>
+                    <div class="aos flex min-h-[112px] items-center p-6 rounded-2xl bg-white border border-emerald-100 shadow-lg shadow-emerald-100/40 transition-all duration-300" style="transition-delay:0.15s"><h3 class="text-xl font-semibold text-slate-800">Bacteriología</h3></div>
+                    <div class="aos flex min-h-[112px] items-center p-6 rounded-2xl bg-white border border-emerald-100 shadow-lg shadow-emerald-100/40 transition-all duration-300" style="transition-delay:0.2s"><h3 class="text-xl font-semibold text-slate-800">Oncología</h3></div>
+                    <div class="aos flex min-h-[112px] items-center p-6 rounded-2xl bg-white border border-emerald-100 shadow-lg shadow-emerald-100/40 transition-all duration-300" style="transition-delay:0.25s"><h3 class="text-xl font-semibold text-slate-800">Cardiología</h3></div>
+                    <div class="aos flex min-h-[112px] items-center p-6 rounded-2xl bg-white border border-emerald-100 shadow-lg shadow-emerald-100/40 transition-all duration-300" style="transition-delay:0.3s"><h3 class="text-xl font-semibold text-slate-800">Marcadores Biológicos</h3></div>
+                    <div class="aos flex min-h-[112px] items-center p-6 rounded-2xl bg-white border border-emerald-100 shadow-lg shadow-emerald-100/40 transition-all duration-300" style="transition-delay:0.35s"><h3 class="text-xl font-semibold text-slate-800">Inmunología</h3></div>
+                    <div class="aos flex min-h-[112px] items-center p-6 rounded-2xl bg-white border border-emerald-100 shadow-lg shadow-emerald-100/40 transition-all duration-300" style="transition-delay:0.4s"><h3 class="text-xl font-semibold text-slate-800">Alergias</h3></div>
+                    <div class="aos flex min-h-[112px] items-center p-6 rounded-2xl bg-white border border-emerald-100 shadow-lg shadow-emerald-100/40 transition-all duration-300" style="transition-delay:0.45s"><h3 class="text-xl font-semibold text-slate-800">Fertilidad</h3></div>
+                    <div class="aos flex min-h-[112px] items-center p-6 rounded-2xl bg-white border border-emerald-100 shadow-lg shadow-emerald-100/40 transition-all duration-300" style="transition-delay:0.5s"><h3 class="text-xl font-semibold text-slate-800">Reumatología</h3></div>
+                    <div class="aos flex min-h-[112px] items-center p-6 rounded-2xl bg-white border border-emerald-100 shadow-lg shadow-emerald-100/40 transition-all duration-300" style="transition-delay:0.55s"><h3 class="text-xl font-semibold text-slate-800">Pediatría</h3></div>
+                    <div class="aos flex min-h-[112px] items-center p-6 rounded-2xl bg-white border border-emerald-100 shadow-lg shadow-emerald-100/40 transition-all duration-300" style="transition-delay:0.6s"><h3 class="text-xl font-semibold text-slate-800">Micología</h3></div>
                 </div>
             </div>
         </section>
@@ -136,8 +161,8 @@
 
     </main>
 
-    <footer class="bg-slate-900 border-t border-slate-700 py-6">
-        <div class="container mx-auto px-4 text-center text-sm text-slate-400">
+    <footer class="bg-white/80 border-t border-emerald-100 py-6">
+        <div class="container mx-auto px-4 text-center text-sm text-slate-500">
             © 2026 Laboratorio Palavecino - Todos los derechos reservados
         </div>
     </footer>

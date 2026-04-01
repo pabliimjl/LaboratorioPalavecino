@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Turnos Reservados - Laboratorio de Análisis Clinicos Palavecino</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <style>
+        :root {
+            color-scheme: light;
+        }
+
+        body {
+            background:
+                radial-gradient(circle at top left, rgba(16, 185, 129, 0.14), transparent 30%),
+                linear-gradient(180deg, #f0fdf4 0%, #f8fafc 42%, #ecfdf5 100%);
+            color: #0f172a;
+        }
+
+        .nav-link {
+            display: block;
+            width: 100%;
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.75rem;
+            color: #334155;
+            transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+        }
+
+        .nav-link:hover {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+
+        #mainMenuMobile {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+    </style>
+</head>
+<body class="text-slate-800 leading-relaxed min-h-screen flex flex-col">
+    <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-emerald-100 shadow-sm shadow-emerald-100/60">
+        <nav class="container mx-auto px-4 py-0 flex items-stretch md:items-center justify-between">
+            <a href="main.html" class="flex items-center w-[85%] h-24 md:h-auto md:w-auto">
+                <img src="img/logo.png" alt="Logo Laboratorio Palavecino" class="w-[calc(100%+4px)] md:w-1/2 -mr-[4px] md:mr-0 h-full md:h-auto rounded-l-lg rounded-r-none md:rounded-lg object-contain bg-white" />
+            </a>
+            <button id="menuToggle" class="md:hidden -ml-[3px] w-[15%] h-24 flex items-center justify-center text-emerald-900 focus:outline-none bg-emerald-50 border border-emerald-200 rounded-r-md rounded-l-none" aria-label="Abrir menu">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
+            <ul id="mainMenu" class="hidden md:flex gap-8 text-sm font-medium whitespace-nowrap">
+                <li><a href="main.html#inicio" class="nav-link">Inicio</a></li>
+                <li><a href="turnos.html" class="nav-link">Turnos</a></li>
+                <li><a href="resultados.html" class="nav-link">Resultados</a></li>
+                <li><a href="main.html#especialidades" class="nav-link">Especialidades</a></li>
+                <li><a href="ooss.html" class="nav-link">Obras sociales</a></li>
+                <li><a href="contacto.html" class="nav-link">Contacto</a></li>
+            </ul>
+        </nav>
+        <div id="mainMenuMobile" class="md:hidden absolute top-full left-0 w-full z-50 bg-white/95 border-t border-emerald-100 shadow-lg shadow-emerald-100/60" style="max-height:0;overflow:hidden">
+            <ul class="flex flex-col p-4 gap-2 text-sm font-medium">
+                <li><a href="main.html#inicio" class="nav-link">Inicio</a></li>
+                <li><a href="turnos.html" class="nav-link">Turnos</a></li>
+                <li><a href="resultados.html" class="nav-link">Resultados</a></li>
+                <li><a href="main.html#especialidades" class="nav-link">Especialidades</a></li>
+                <li><a href="ooss.html" class="nav-link">Obras sociales</a></li>
+                <li><a href="contacto.html" class="nav-link">Contacto</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <main class="flex-1 container mx-auto px-4 py-14 sm:py-20">
+        <div class="max-w-6xl mx-auto">
+            <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between mb-8">
+                <div>
+                    <span id="sourceBadge" class="inline-flex rounded-full border border-emerald-200 bg-emerald-50 px-4 py-1 text-sm font-semibold text-emerald-800 shadow-sm">Registro local</span>
+                    <h1 class="mt-4 text-3xl sm:text-5xl font-black text-slate-900">Turnos agendados</h1>
+                    <p id="sourceDescription" class="mt-3 max-w-2xl text-slate-600">Esta página muestra los turnos guardados en este navegador. Si abrís el sitio desde otro dispositivo o borrás los datos del navegador, esta lista no se comparte.</p>
+                </div>
+                <div class="flex flex-wrap gap-3">
+                    <a href="turnos.html" class="inline-flex items-center justify-center rounded-xl bg-emerald-600 px-5 py-3 font-semibold text-white hover:bg-emerald-700">Volver a turnos</a>
+                    <button id="clearAppointmentsButton" type="button" class="inline-flex items-center justify-center rounded-xl border border-red-200 bg-white px-5 py-3 font-semibold text-red-700 hover:bg-red-50">Borrar todos</button>
+                </div>
+            </div>
+
+            <div id="emptyState" class="hidden rounded-[2rem] border border-emerald-100 bg-white/90 p-8 text-center shadow-2xl shadow-emerald-100/40">
+                <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full border border-emerald-200 bg-emerald-50">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-emerald-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m2 9H7a2 2 0 01-2-2V7a2 2 0 012-2h2l1-2h4l1 2h2a2 2 0 012 2v12a2 2 0 01-2 2z" />
+                    </svg>
+                </div>
+                <h2 class="mt-5 text-2xl font-bold text-slate-900">Todavía no hay turnos guardados</h2>
+                <p class="mt-3 text-slate-600">Cuando confirmes un turno desde la página de turnos, va a aparecer listado acá.</p>
+            </div>
+
+            <div id="appointmentsList" class="grid gap-6 lg:grid-cols-2"></div>
+        </div>
+    </main>
+
+    <footer class="bg-white/80 border-t border-emerald-100 py-6">
+        <div class="container mx-auto px-4 text-center text-sm text-slate-500">
+            © 2026 Laboratorio Palavecino - Todos los derechos reservados
+        </div>
+    </footer>
+
+    <script>
+        const STORAGE_KEY = 'laboratorioTurnosReservados';
+        const REMOTE_TABLE = 'appointments';
+        const supabaseConfig = window.SUPABASE_CONFIG || {};
+        const menuToggle = document.getElementById('menuToggle');
+        const menuMobile = document.getElementById('mainMenuMobile');
+        const appointmentsList = document.getElementById('appointmentsList');
+        const emptyState = document.getElementById('emptyState');
+        const clearAppointmentsButton = document.getElementById('clearAppointmentsButton');
+        const sourceBadge = document.getElementById('sourceBadge');
+        const sourceDescription = document.getElementById('sourceDescription');
+
+        let supabaseClient = null;
+
+        menuToggle.addEventListener('click', () => {
+            const isOpen = menuMobile.style.maxHeight && menuMobile.style.maxHeight !== '0px';
+            menuMobile.style.maxHeight = isOpen ? '0' : '400px';
+        });
+
+        function hasSupabaseConfig() {
+            return Boolean(
+                supabaseConfig.url &&
+                supabaseConfig.anonKey &&
+                !supabaseConfig.url.includes('TU_SUPABASE_URL') &&
+                !supabaseConfig.anonKey.includes('TU_SUPABASE_ANON_KEY')
+            );
+        }
+
+        function getSupabaseClient() {
+            if (!hasSupabaseConfig() || !window.supabase) {
+                return null;
+            }
+
+            if (!supabaseClient) {
+                supabaseClient = window.supabase.createClient(supabaseConfig.url, supabaseConfig.anonKey);
+            }
+
+            return supabaseClient;
+        }
+
+        function setSourceUi(mode) {
+            if (mode === 'remote') {
+                sourceBadge.textContent = 'Supabase';
+                sourceDescription.textContent = 'Esta página muestra los turnos guardados en Supabase. Podés consultarlos desde cualquier dispositivo que use la misma base.';
+                return;
+            }
+
+            sourceBadge.textContent = 'Registro local';
+            sourceDescription.textContent = 'Esta página muestra los turnos guardados en este navegador. Si abrís el sitio desde otro dispositivo o borrás los datos del navegador, esta lista no se comparte.';
+        }
+
+        function readAppointmentsLocal() {
+            try {
+                return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+            } catch {
+                return [];
+            }
+        }
+
+        async function readAppointmentsRemote() {
+            const client = getSupabaseClient();
+            if (!client) {
+                return null;
+            }
+
+            const { data, error } = await client
+                .from(REMOTE_TABLE)
+                .select('id, first_name, last_name, dni, appointment_date, appointment_time, exams, created_at')
+                .order('created_at', { ascending: false });
+
+            if (error) {
+                return null;
+            }
+
+            return data.map((row) => ({
+                id: row.id,
+                nombre: row.first_name,
+                apellido: row.last_name,
+                dni: row.dni,
+                fecha: row.appointment_date,
+                hora: row.appointment_time ? row.appointment_time.slice(0, 5) : '',
+                examenes: Array.isArray(row.exams) ? row.exams : [],
+                creadoEl: row.created_at
+            }));
+        }
+
+        function formatDate(dateValue) {
+            const [year, month, day] = dateValue.split('-');
+            return `${day}/${month}/${year}`;
+        }
+
+        function formatCreatedAt(dateValue) {
+            const date = new Date(dateValue);
+            return date.toLocaleString('es-AR', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        async function renderAppointments() {
+            const remoteAppointments = await readAppointmentsRemote();
+            const appointments = remoteAppointments || readAppointmentsLocal();
+            setSourceUi(remoteAppointments ? 'remote' : 'local');
+            appointmentsList.innerHTML = '';
+
+            if (appointments.length === 0) {
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            emptyState.classList.add('hidden');
+
+            appointments.forEach((appointment) => {
+                const card = document.createElement('article');
+                card.className = 'rounded-[2rem] border border-emerald-100 bg-white/90 p-6 shadow-xl shadow-emerald-100/40';
+                card.innerHTML = `
+                    <div class="flex items-start justify-between gap-4">
+                        <div>
+                            <p class="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-700">Turno reservado</p>
+                            <h2 class="mt-2 text-2xl font-bold text-slate-900">${appointment.nombre} ${appointment.apellido}</h2>
+                        </div>
+                        <span class="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-800">${appointment.hora}</span>
+                    </div>
+                    <dl class="mt-5 grid gap-3 sm:grid-cols-2">
+                        <div class="rounded-2xl bg-slate-50 px-4 py-3">
+                            <dt class="text-sm font-semibold text-slate-500">DNI</dt>
+                            <dd class="mt-1 text-base font-bold text-slate-900">${appointment.dni}</dd>
+                        </div>
+                        <div class="rounded-2xl bg-slate-50 px-4 py-3">
+                            <dt class="text-sm font-semibold text-slate-500">Fecha</dt>
+                            <dd class="mt-1 text-base font-bold text-slate-900">${formatDate(appointment.fecha)}</dd>
+                        </div>
+                        <div class="rounded-2xl bg-slate-50 px-4 py-3 sm:col-span-2">
+                            <dt class="text-sm font-semibold text-slate-500">Registrado</dt>
+                            <dd class="mt-1 text-base font-bold text-slate-900">${formatCreatedAt(appointment.creadoEl)}</dd>
+                        </div>
+                    </dl>
+                    <div class="mt-4 rounded-2xl bg-slate-50 px-4 py-4">
+                        <h3 class="text-sm font-semibold text-slate-500">Examenes</h3>
+                        <ul class="mt-3 flex flex-wrap gap-2">
+                            ${appointment.examenes.map((exam) => `<li class="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-sm font-medium text-emerald-900">${exam}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+                appointmentsList.appendChild(card);
+            });
+        }
+
+        clearAppointmentsButton.addEventListener('click', async () => {
+            localStorage.removeItem(STORAGE_KEY);
+            if (hasSupabaseConfig()) {
+                alert('Supabase está activo: este botón solo limpia el respaldo local del navegador.');
+            }
+            await renderAppointments();
+        });
+
+        renderAppointments();
+    </script>
+</body>
+</html>
