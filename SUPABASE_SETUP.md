@@ -16,11 +16,30 @@
 - Si Supabase esta configurado, tambien inserta en `public.appointments`.
 - `turnos-reservados.html` intenta leer desde Supabase.
 - Si no hay config o falla la conexion, usa localStorage.
+- `resultados.html` consulta `public.results` filtrando por DNI + `access_code`.
+
+## Datos requeridos para resultados
+
+Al cargar un resultado en `public.results`, completar:
+- `appointment_id`: turno del paciente
+- `access_code`: codigo que se entrega al paciente
+- `pdf_path`: URL publica del PDF o ruta accesible
+
+Ejemplo de insercion:
+
+```sql
+insert into public.results (appointment_id, access_code, pdf_path, notes)
+values (1, 'AB12CD34', 'https://tu-dominio.com/resultados/resultado-1.pdf', 'Perfil lipidico');
+```
 
 ## Importante para produccion
 
-- Las politicas incluidas son de demo y dejan insertar/leer/borrar con rol anon.
+- Las politicas incluidas son de demo y dejan insertar/leer/editar/borrar con rol anon.
 - Para produccion, conviene:
-  - limitar borrado solo a admin,
+   - limitar edicion y borrado solo a admin,
   - agregar autenticacion para personal,
   - auditar cambios.
+
+## Si ya ejecutaste el esquema antes
+
+Si la tabla ya estaba creada, ejecuta nuevamente en SQL Editor el bloque de politicas para que se creen tambien anon_update_appointments y anon_delete_appointments.

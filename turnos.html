@@ -87,7 +87,7 @@
     <main class="flex-1">
         <section class="container mx-auto px-4 py-14 sm:py-20">
             <div class="max-w-6xl mx-auto grid gap-8 lg:grid-cols-[0.95fr_1.35fr] items-start">
-                <div class="rounded-[2rem] border border-emerald-100 bg-white/85 p-6 sm:p-8 shadow-2xl shadow-emerald-100/50">
+                <div id="infoPanel" class="rounded-[2rem] border border-emerald-100 bg-white/85 p-6 sm:p-8 shadow-2xl shadow-emerald-100/50">
                     <span class="inline-flex rounded-full border border-emerald-200 bg-emerald-50 px-4 py-1 text-sm font-semibold text-emerald-800 shadow-sm">Reserva online</span>
                     <h1 class="mt-4 text-3xl sm:text-5xl font-black text-slate-900">Solicitá tu turno</h1>
                     <p class="mt-4 text-slate-600">Completá tus datos, elegí una fecha, un horario disponible y uno o más estudios. Los turnos se ofrecen cada 10 minutos entre las 7:00 y las 10:00.</p>
@@ -262,6 +262,7 @@
         const fechaInput = document.getElementById('fecha');
         const formScreen = document.getElementById('formScreen');
         const confirmationScreen = document.getElementById('confirmationScreen');
+        const infoPanel = document.getElementById('infoPanel');
         const newAppointmentButton = document.getElementById('newAppointmentButton');
         const storageStatus = document.getElementById('storageStatus');
         const STORAGE_KEY = 'laboratorioTurnosReservados';
@@ -595,6 +596,7 @@
             fillSummary(validatedValues);
             formScreen.classList.add('hidden');
             confirmationScreen.classList.remove('hidden');
+            infoPanel.classList.add('hidden');
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
 
@@ -603,6 +605,7 @@
             clearAllErrors();
             formScreen.classList.remove('hidden');
             confirmationScreen.classList.add('hidden');
+            infoPanel.classList.remove('hidden');
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
 
