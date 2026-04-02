@@ -63,7 +63,14 @@ create policy anon_delete_appointments
     to anon
     using (true);
 
--- Politicas de resultados (solo lectura anon para etapa publica)
+-- Politicas de resultados (demo publica; ajustar para produccion)
+drop policy if exists anon_insert_results on public.results;
+create policy anon_insert_results
+    on public.results
+    for insert
+    to anon
+    with check (true);
+
 drop policy if exists anon_select_results on public.results;
 create policy anon_select_results
     on public.results
@@ -71,18 +78,25 @@ create policy anon_select_results
     to anon
     using (true);
 
+drop policy if exists anon_update_results on public.results;
+create policy anon_update_results
+    on public.results
+    for update
+    to anon
+    using (true)
+    with check (true);
+
+drop policy if exists anon_delete_results on public.results;
+create policy anon_delete_results
+    on public.results
+    for delete
+    to anon
+    using (true);
+
 -- Bucket sugerido para PDFs (ejecutar en SQL editor)
 insert into storage.buckets (id, name, public)
 values ('resultados-pdf', 'resultados-pdf', false)
 on conflict (id) do nothing;
-
--- Politica insert en resultados para anon
-drop policy if exists anon_insert_results on public.results;
-create policy anon_insert_results
-    on public.results
-    for insert
-    to anon
-    with check (true);
 
 -- Politicas de Storage para el bucket resultados-pdf
 drop policy if exists "anon_insert_storage_resultados" on storage.objects;

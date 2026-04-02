@@ -42,4 +42,6 @@ values (1, 'AB12CD34', 'https://tu-dominio.com/resultados/resultado-1.pdf', 'Per
 
 ## Si ya ejecutaste el esquema antes
 
-Si la tabla ya estaba creada, ejecuta nuevamente en SQL Editor el bloque de politicas para que se creen tambien anon_update_appointments y anon_delete_appointments.
+Si las tablas ya estaban creadas, ejecuta nuevamente en SQL Editor el bloque de politicas para asegurar tambien:
+- `anon_update_appointments` y `anon_delete_appointments`
+- `anon_insert_results`, `anon_update_results` y `anon_delete_results`
