@@ -1,0 +1,114 @@
+:root {
+    color-scheme: light;
+}
+
+body {
+    color: #0f172a;
+}
+
+body.page-main,
+body.page-turnos,
+body.page-panel,
+body.page-turnos-reservados {
+    background:
+        radial-gradient(circle at top left, rgba(16, 185, 129, 0.14), transparent 30%),
+        linear-gradient(180deg, #f0fdf4 0%, #f8fafc 42%, #ecfdf5 100%);
+}
+
+body.page-contacto {
+    background:
+        radial-gradient(circle at top right, rgba(16, 185, 129, 0.14), transparent 28%),
+        linear-gradient(180deg, #f0fdf4 0%, #f8fafc 45%, #ecfdf5 100%);
+}
+
+body.page-ooss {
+    background:
+        radial-gradient(circle at top left, rgba(16, 185, 129, 0.14), transparent 28%),
+        linear-gradient(180deg, #f0fdf4 0%, #f8fafc 45%, #ecfdf5 100%);
+}
+
+body.page-resultados {
+    background:
+        radial-gradient(circle at top, rgba(16, 185, 129, 0.16), transparent 30%),
+        linear-gradient(180deg, #f0fdf4 0%, #f8fafc 48%, #ecfdf5 100%);
+}
+
+.nav-link {
+    display: block;
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.75rem;
+    color: #334155;
+    transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+}
+
+.nav-link:hover {
+    background-color: #d1fae5;
+    color: #065f46;
+}
+
+.nav-link-active {
+    background-color: #059669;
+    color: #f8fafc;
+    font-weight: 600;
+    box-shadow: 0 10px 24px rgba(5, 150, 105, 0.2);
+}
+
+#mainMenuMobile {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#mainMenuMobile.menu-open {
+    max-height: 400px;
+}
+
+.aos {
+    opacity: 0;
+    transform: translateY(32px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.aos.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.aos-left {
+    opacity: 0;
+    transform: translateX(-40px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.aos-left.visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.aos-right {
+    opacity: 0;
+    transform: translateX(40px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.aos-right.visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+body.page-main #especialidades .grid > div:hover {
+    background-color: #ecfdf5;
+    border-color: #34d399;
+    transform: translateY(-4px);
+    box-shadow: 0 18px 40px rgba(16, 185, 129, 0.16);
+}
+
+body.page-main #especialidades .grid > div:hover h3 {
+    color: #064e3b;
+}
+
+.field-error {
+    border-color: #ef4444;
+    box-shadow: 0 0 0 1px rgba(239, 68, 68, 0.2);
+}

@@ -5,41 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Laboratorio de Análisis Clinicos Palavecino</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        :root {
-            color-scheme: light;
-        }
-
-        body {
-            background:
-                radial-gradient(circle at top right, rgba(16, 185, 129, 0.14), transparent 28%),
-                linear-gradient(180deg, #f0fdf4 0%, #f8fafc 45%, #ecfdf5 100%);
-            color: #0f172a;
-        }
-
-        .nav-link {
-            display: block;
-            width: 100%;
-            padding: 0.5rem 0.75rem;
-            border-radius: 0.75rem;
-            color: #334155;
-            transition: background-color 0.3s, color 0.3s;
-        }
-        .nav-link:hover {
-            background-color: #d1fae5;
-            color: #065f46;
-        }
-        .nav-link-active {
-            background-color: #059669;
-            color: #f8fafc;
-            font-weight: 600;
-        }
-    </style>
+    <link rel="stylesheet" href="styles/style.css">
 </head>
-<body class="text-slate-800 leading-relaxed overflow-x-hidden">
+<body class="page-contacto text-slate-800 leading-relaxed overflow-x-hidden">
     <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-emerald-100 shadow-sm shadow-emerald-100/60">
         <nav class="container mx-auto px-4 py-0 flex items-stretch md:items-center justify-between">
-            <a href="main.html" class="flex items-center w-[85%] h-24 md:h-auto md:w-auto">
+            <a href="index.html" class="flex items-center w-[85%] h-24 md:h-auto md:w-auto">
                 <img src="img/logo.png" alt="Logo Laboratorio Palavecino" class="w-[calc(100%+4px)] md:w-1/2 -mr-[4px] md:mr-0 h-full md:h-auto rounded-l-lg rounded-r-none md:rounded-lg object-contain bg-white" />
             </a>
             <button id="menuToggle" class="md:hidden -ml-[3px] w-[15%] h-24 flex items-center justify-center text-emerald-900 focus:outline-none bg-emerald-50 border border-emerald-200 rounded-r-md rounded-l-none">
@@ -48,20 +19,20 @@
                 </svg>
             </button>
             <ul id="mainMenu" class="hidden md:flex gap-8 text-sm font-medium whitespace-nowrap">
-                <li><a href="main.html#inicio" class="nav-link">Inicio</a></li>
+                <li><a href="index.html#inicio" class="nav-link">Inicio</a></li>
                 <li><a href="turnos.html" class="nav-link">Turnos</a></li>
                 <li><a href="resultados.html" class="nav-link">Resultados</a></li>
-                <li><a href="main.html#especialidades" class="nav-link">Especialidades</a></li>
+                <li><a href="index.html#especialidades" class="nav-link">Especialidades</a></li>
                 <li><a href="ooss.html" class="nav-link">Obras sociales</a></li>
                 <li><a href="contacto.html" class="nav-link nav-link-active">Contacto</a></li>
             </ul>
         </nav>
-        <div id="mainMenuMobile" class="md:hidden absolute top-full left-0 w-full z-50 bg-white/95 border-t border-emerald-100 shadow-lg shadow-emerald-100/60" style="max-height:0;overflow:hidden">
+        <div id="mainMenuMobile" class="md:hidden absolute top-full left-0 w-full z-50 bg-white/95 border-t border-emerald-100 shadow-lg shadow-emerald-100/60">
             <ul class="flex flex-col p-4 gap-2 text-sm font-medium">
-                <li><a href="main.html#inicio" class="nav-link">Inicio</a></li>
+                <li><a href="index.html#inicio" class="nav-link">Inicio</a></li>
                 <li><a href="turnos.html" class="nav-link">Turnos</a></li>
                 <li><a href="resultados.html" class="nav-link">Resultados</a></li>
-                <li><a href="main.html#especialidades" class="nav-link">Especialidades</a></li>
+                <li><a href="index.html#especialidades" class="nav-link">Especialidades</a></li>
                 <li><a href="ooss.html" class="nav-link">Obras sociales</a></li>
                 <li><a href="contacto.html" class="nav-link nav-link-active">Contacto</a></li>
             </ul>
@@ -117,23 +88,8 @@
         </div>
     </footer>
 
-    <script>
-        const menuToggle = document.getElementById('menuToggle');
-        const menuMobile = document.getElementById('mainMenuMobile');
-        menuToggle.addEventListener('click', () => {
-            const isOpen = menuMobile.style.maxHeight && menuMobile.style.maxHeight !== '0px';
-            menuMobile.style.maxHeight = isOpen ? '0' : '400px';
-        });
-
-        // Scroll animations
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, { threshold: 0.1 });
-        document.querySelectorAll('.aos, .aos-left, .aos-right').forEach(el => observer.observe(el));
-    </script>
+        <script src="scripts/script.js"></script>
 </body>
 </html>
+
+

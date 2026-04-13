@@ -7,55 +7,12 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="supabase-config.js"></script>
-    <style>
-        :root {
-            color-scheme: light;
-        }
-
-        body {
-            background:
-                radial-gradient(circle at top left, rgba(16, 185, 129, 0.14), transparent 30%),
-                linear-gradient(180deg, #f0fdf4 0%, #f8fafc 42%, #ecfdf5 100%);
-            color: #0f172a;
-        }
-
-        .nav-link {
-            display: block;
-            width: 100%;
-            padding: 0.5rem 0.75rem;
-            border-radius: 0.75rem;
-            color: #334155;
-            transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
-        }
-
-        .nav-link:hover {
-            background-color: #d1fae5;
-            color: #065f46;
-        }
-
-        .nav-link-active {
-            background-color: #059669;
-            color: #f8fafc;
-            font-weight: 600;
-            box-shadow: 0 10px 24px rgba(5, 150, 105, 0.2);
-        }
-
-        #mainMenuMobile {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .field-error {
-            border-color: #ef4444;
-            box-shadow: 0 0 0 1px rgba(239, 68, 68, 0.2);
-        }
-    </style>
+    <link rel="stylesheet" href="styles/style.css">
 </head>
-<body class="text-slate-800 leading-relaxed min-h-screen flex flex-col">
+<body class="page-turnos text-slate-800 leading-relaxed min-h-screen flex flex-col">
     <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-emerald-100 shadow-sm shadow-emerald-100/60">
         <nav class="container mx-auto px-4 py-0 flex items-stretch md:items-center justify-between">
-            <a href="main.html" class="flex items-center w-[85%] h-24 md:h-auto md:w-auto">
+            <a href="index.html" class="flex items-center w-[85%] h-24 md:h-auto md:w-auto">
                 <img src="img/logo.png" alt="Logo Laboratorio Palavecino" class="w-[calc(100%+4px)] md:w-1/2 -mr-[4px] md:mr-0 h-full md:h-auto rounded-l-lg rounded-r-none md:rounded-lg object-contain bg-white" />
             </a>
             <button id="menuToggle" class="md:hidden -ml-[3px] w-[15%] h-24 flex items-center justify-center text-emerald-900 focus:outline-none bg-emerald-50 border border-emerald-200 rounded-r-md rounded-l-none" aria-label="Abrir menu">
@@ -64,20 +21,20 @@
                 </svg>
             </button>
             <ul id="mainMenu" class="hidden md:flex gap-8 text-sm font-medium whitespace-nowrap">
-                <li><a href="main.html#inicio" class="nav-link">Inicio</a></li>
+                <li><a href="index.html#inicio" class="nav-link">Inicio</a></li>
                 <li><a href="turnos.html" class="nav-link nav-link-active">Turnos</a></li>
                 <li><a href="resultados.html" class="nav-link">Resultados</a></li>
-                <li><a href="main.html#especialidades" class="nav-link">Especialidades</a></li>
+                <li><a href="index.html#especialidades" class="nav-link">Especialidades</a></li>
                 <li><a href="ooss.html" class="nav-link">Obras sociales</a></li>
                 <li><a href="contacto.html" class="nav-link">Contacto</a></li>
             </ul>
         </nav>
-        <div id="mainMenuMobile" class="md:hidden absolute top-full left-0 w-full z-50 bg-white/95 border-t border-emerald-100 shadow-lg shadow-emerald-100/60" style="max-height:0;overflow:hidden">
+        <div id="mainMenuMobile" class="md:hidden absolute top-full left-0 w-full z-50 bg-white/95 border-t border-emerald-100 shadow-lg shadow-emerald-100/60">
             <ul class="flex flex-col p-4 gap-2 text-sm font-medium">
-                <li><a href="main.html#inicio" class="nav-link">Inicio</a></li>
+                <li><a href="index.html#inicio" class="nav-link">Inicio</a></li>
                 <li><a href="turnos.html" class="nav-link nav-link-active">Turnos</a></li>
                 <li><a href="resultados.html" class="nav-link">Resultados</a></li>
-                <li><a href="main.html#especialidades" class="nav-link">Especialidades</a></li>
+                <li><a href="index.html#especialidades" class="nav-link">Especialidades</a></li>
                 <li><a href="ooss.html" class="nav-link">Obras sociales</a></li>
                 <li><a href="contacto.html" class="nav-link">Contacto</a></li>
             </ul>
@@ -125,9 +82,9 @@
                             </div>
                         </div>
 
-                        <div id="storageStatus" class="mt-4 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
+                        <!--<div id="storageStatus" class="mt-4 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
                             Modo actual: guardado local en este navegador.
-                        </div>
+                        </div>-->
 
                         <div id="formAlert" class="hidden mt-6 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700"></div>
 
@@ -214,7 +171,7 @@
                             </div>
 
                             <div class="mt-6 flex flex-wrap gap-3 justify-center sm:justify-between">
-                                <a href="main.html" class="inline-flex items-center justify-center rounded-xl border border-emerald-200 bg-white px-5 py-3 font-semibold text-emerald-900 hover:bg-emerald-50">Volver al inicio</a>
+                                <a href="index.html" class="inline-flex items-center justify-center rounded-xl border border-emerald-200 bg-white px-5 py-3 font-semibold text-emerald-900 hover:bg-emerald-50">Volver al inicio</a>
                                 <button id="newAppointmentButton" type="button" class="inline-flex items-center justify-center rounded-xl bg-emerald-600 px-5 py-3 font-semibold text-white hover:bg-emerald-700">Solicitar otro turno</button>
                             </div>
                         </div>
@@ -230,410 +187,9 @@
         </div>
     </footer>
 
-    <script>
-        const specialties = [
-            "Marcadores Tumorales",
-            "Endocrinología, Metabolismo y Nutrición",
-            "Bacteriología",
-            "Oncología",
-            "Cardiología",
-            "Marcadores Biológicos",
-            "Inmunología",
-            "Alergias",
-            "Fertilidad",
-            "Reumatología",
-            "Pediatría",
-            "Micología"
-        ];
-
-        const menuToggle = document.getElementById('menuToggle');
-        const menuMobile = document.getElementById('mainMenuMobile');
-        const appointmentForm = document.getElementById('appointmentForm');
-        const formAlert = document.getElementById('formAlert');
-        const examGrid = document.getElementById('examGrid');
-        const horaSelect = document.getElementById('hora');
-        const fechaInput = document.getElementById('fecha');
-        const formScreen = document.getElementById('formScreen');
-        const confirmationScreen = document.getElementById('confirmationScreen');
-        const infoPanel = document.getElementById('infoPanel');
-        const newAppointmentButton = document.getElementById('newAppointmentButton');
-        const storageStatus = document.getElementById('storageStatus');
-        const STORAGE_KEY = 'laboratorioTurnosReservados';
-        const REMOTE_TABLE = 'appointments';
-        const supabaseConfig = window.SUPABASE_CONFIG || {};
-
-        let supabaseClient = null;
-
-        const fields = {
-            nombre: document.getElementById('nombre'),
-            apellido: document.getElementById('apellido'),
-            dni: document.getElementById('dni'),
-            fecha: fechaInput,
-            hora: horaSelect
-        };
-
-        menuToggle.addEventListener('click', () => {
-            const isOpen = menuMobile.style.maxHeight && menuMobile.style.maxHeight !== '0px';
-            menuMobile.style.maxHeight = isOpen ? '0' : '400px';
-        });
-
-        function buildTimeOptions() {
-            for (let hour = 7; hour <= 10; hour += 1) {
-                for (let minute = 0; minute < 60; minute += 10) {
-                    if (hour === 10 && minute > 0) {
-                        break;
-                    }
-
-                    const hourLabel = String(hour).padStart(2, '0');
-                    const minuteLabel = String(minute).padStart(2, '0');
-                    const value = `${hourLabel}:${minuteLabel}`;
-                    const option = document.createElement('option');
-                    option.value = value;
-                    option.textContent = value;
-                    horaSelect.appendChild(option);
-                }
-            }
-        }
-
-        function buildExamOptions() {
-            specialties.forEach((specialty, index) => {
-                const label = document.createElement('label');
-                label.className = 'flex items-start gap-3 rounded-2xl border border-emerald-100 bg-white px-4 py-3 text-sm text-slate-700 shadow-sm hover:border-emerald-300 hover:bg-emerald-50/40';
-                label.innerHTML = `
-                    <input type="checkbox" name="examenes" value="${specialty}" class="mt-1 h-4 w-4 rounded border-emerald-300 text-emerald-600 focus:ring-emerald-500" />
-                    <span>${specialty}</span>
-                `;
-                label.style.transitionDelay = `${index * 0.02}s`;
-                examGrid.appendChild(label);
-            });
-        }
-
-        function setMinDate() {
-            const today = new Date();
-            const year = today.getFullYear();
-            const month = String(today.getMonth() + 1).padStart(2, '0');
-            const day = String(today.getDate()).padStart(2, '0');
-            fechaInput.min = `${year}-${month}-${day}`;
-        }
-
-        function isWeekday(dateValue) {
-            const [year, month, day] = dateValue.split('-').map(Number);
-            const selectedDate = new Date(year, month - 1, day);
-            const weekDay = selectedDate.getDay();
-            return weekDay >= 1 && weekDay <= 5;
-        }
-
-        function normalizeText(value) {
-            return value.trim().replace(/\s+/g, ' ');
-        }
-
-        function showFieldError(fieldName, message) {
-            const field = fields[fieldName];
-            const errorNode = document.querySelector(`[data-error-for="${fieldName}"]`);
-            if (field) {
-                field.classList.add('field-error');
-            }
-            if (errorNode) {
-                errorNode.textContent = message;
-                errorNode.classList.remove('hidden');
-            }
-        }
-
-        function clearFieldError(fieldName) {
-            const field = fields[fieldName];
-            const errorNode = document.querySelector(`[data-error-for="${fieldName}"]`);
-            if (field) {
-                field.classList.remove('field-error');
-            }
-            if (errorNode) {
-                errorNode.textContent = '';
-                errorNode.classList.add('hidden');
-            }
-        }
-
-        function clearAllErrors() {
-            Object.keys(fields).forEach(clearFieldError);
-            const examError = document.querySelector('[data-error-for="examenes"]');
-            examError.textContent = '';
-            examError.classList.add('hidden');
-            formAlert.classList.add('hidden');
-            formAlert.textContent = '';
-        }
-
-        function getSelectedExams() {
-            return Array.from(document.querySelectorAll('input[name="examenes"]:checked')).map((checkbox) => checkbox.value);
-        }
-
-        function formatDate(dateValue) {
-            const [year, month, day] = dateValue.split('-');
-            return `${day}/${month}/${year}`;
-        }
-
-        function hasSupabaseConfig() {
-            return Boolean(
-                supabaseConfig.url &&
-                supabaseConfig.anonKey &&
-                !supabaseConfig.url.includes('TU_SUPABASE_URL') &&
-                !supabaseConfig.anonKey.includes('TU_SUPABASE_ANON_KEY')
-            );
-        }
-
-        function getSupabaseClient() {
-            if (!hasSupabaseConfig() || !window.supabase) {
-                return null;
-            }
-
-            if (!supabaseClient) {
-                supabaseClient = window.supabase.createClient(supabaseConfig.url, supabaseConfig.anonKey);
-            }
-
-            return supabaseClient;
-        }
-
-        function setStorageStatus(message, tone) {
-            storageStatus.textContent = message;
-            storageStatus.className = 'mt-4 rounded-xl px-4 py-3 text-sm';
-
-            if (tone === 'ok') {
-                storageStatus.classList.add('border', 'border-emerald-200', 'bg-emerald-50', 'text-emerald-800');
-                return;
-            }
-
-            if (tone === 'warn') {
-                storageStatus.classList.add('border', 'border-amber-200', 'bg-amber-50', 'text-amber-800');
-                return;
-            }
-
-            storageStatus.classList.add('border', 'border-red-200', 'bg-red-50', 'text-red-700');
-        }
-
-        function saveAppointmentLocal(values) {
-            const existingAppointments = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-            const appointment = {
-                id: Date.now(),
-                nombre: values.nombre,
-                apellido: values.apellido,
-                dni: values.dni,
-                fecha: values.fecha,
-                hora: values.hora,
-                examenes: values.examenes,
-                creadoEl: new Date().toISOString()
-            };
-
-            existingAppointments.unshift(appointment);
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(existingAppointments));
-            return appointment;
-        }
-
-        async function saveAppointmentRemote(values) {
-            const client = getSupabaseClient();
-            if (!client) {
-                return false;
-            }
-
-            const payload = {
-                first_name: values.nombre,
-                last_name: values.apellido,
-                dni: values.dni,
-                appointment_date: values.fecha,
-                appointment_time: values.hora,
-                exams: values.examenes
-            };
-
-            const { error } = await client.from(REMOTE_TABLE).insert([payload]);
-            if (error) {
-                throw error;
-            }
-
-            return true;
-        }
-
-        function scrollToFirstError() {
-            if (!window.matchMedia('(max-width: 767px)').matches) {
-                return;
-            }
-
-            const firstInvalidField = document.querySelector('.field-error');
-            const examError = document.querySelector('[data-error-for="examenes"]');
-            const target = firstInvalidField || (!examError.classList.contains('hidden') ? examGrid : formAlert);
-
-            if (!target) {
-                return;
-            }
-
-            target.scrollIntoView({ behavior: 'smooth', block: 'center' });
-
-            if (firstInvalidField && typeof firstInvalidField.focus === 'function') {
-                window.setTimeout(() => {
-                    firstInvalidField.focus({ preventScroll: true });
-                }, 250);
-            }
-        }
-
-        function validateForm() {
-            clearAllErrors();
-
-            const values = {
-                nombre: normalizeText(fields.nombre.value),
-                apellido: normalizeText(fields.apellido.value),
-                dni: fields.dni.value.trim(),
-                fecha: fields.fecha.value,
-                hora: fields.hora.value,
-                examenes: getSelectedExams()
-            };
-
-            const missingFields = [];
-            const textPattern = /^[A-Za-zÁÉÍÓÚáéíóúÑñÜü'\- ]+$/;
-            const dniPattern = /^\d{7,8}$/;
-
-            if (!values.nombre) {
-                missingFields.push('nombre');
-                showFieldError('nombre', 'Ingresá tu nombre.');
-            } else if (!textPattern.test(values.nombre)) {
-                showFieldError('nombre', 'El nombre solo puede contener letras y espacios.');
-            }
-
-            if (!values.apellido) {
-                missingFields.push('apellido');
-                showFieldError('apellido', 'Ingresá tu apellido.');
-            } else if (!textPattern.test(values.apellido)) {
-                showFieldError('apellido', 'El apellido solo puede contener letras y espacios.');
-            }
-
-            if (!values.dni) {
-                missingFields.push('dni');
-                showFieldError('dni', 'Ingresá tu DNI.');
-            } else if (!dniPattern.test(values.dni)) {
-                showFieldError('dni', 'El DNI debe tener 7 u 8 numeros.');
-            }
-
-            if (!values.fecha) {
-                missingFields.push('fecha');
-                showFieldError('fecha', 'Seleccioná una fecha.');
-            } else if (values.fecha < fechaInput.min) {
-                showFieldError('fecha', 'La fecha no puede ser anterior a hoy.');
-            } else if (!isWeekday(values.fecha)) {
-                showFieldError('fecha', 'Solo podés elegir dias de lunes a viernes.');
-            }
-
-            if (!values.hora) {
-                missingFields.push('hora');
-                showFieldError('hora', 'Seleccioná un horario disponible.');
-            }
-
-            if (values.examenes.length === 0) {
-                missingFields.push('examenes');
-                const examError = document.querySelector('[data-error-for="examenes"]');
-                examError.textContent = 'Seleccioná al menos un examen.';
-                examError.classList.remove('hidden');
-            }
-
-            const invalidMessages = [];
-            if (missingFields.length > 0) {
-                const labels = {
-                    nombre: 'nombre',
-                    apellido: 'apellido',
-                    dni: 'DNI',
-                    fecha: 'fecha',
-                    hora: 'hora',
-                    examenes: 'examenes'
-                };
-                invalidMessages.push(`Faltan completar: ${missingFields.map((field) => labels[field]).join(', ')}.`);
-            }
-
-            const hasErrors = document.querySelectorAll('.field-error').length > 0 || values.examenes.length === 0;
-            if (hasErrors) {
-                invalidMessages.push('Revisá los campos marcados y corregí los datos antes de confirmar.');
-                formAlert.innerHTML = invalidMessages.join('<br>');
-                formAlert.classList.remove('hidden');
-                scrollToFirstError();
-                return null;
-            }
-
-            return values;
-        }
-
-        function fillSummary(values) {
-            document.getElementById('summaryPaciente').textContent = `${values.nombre} ${values.apellido}`;
-            document.getElementById('summaryDni').textContent = values.dni;
-            document.getElementById('summaryFecha').textContent = formatDate(values.fecha);
-            document.getElementById('summaryHora').textContent = values.hora;
-
-            const summaryExamenes = document.getElementById('summaryExamenes');
-            summaryExamenes.innerHTML = '';
-            values.examenes.forEach((exam) => {
-                const item = document.createElement('li');
-                item.className = 'rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-sm font-medium text-emerald-900';
-                item.textContent = exam;
-                summaryExamenes.appendChild(item);
-            });
-        }
-
-        appointmentForm.addEventListener('submit', async (event) => {
-            event.preventDefault();
-            const validatedValues = validateForm();
-            if (!validatedValues) {
-                return;
-            }
-
-            saveAppointmentLocal(validatedValues);
-            try {
-                const storedRemotely = await saveAppointmentRemote(validatedValues);
-                if (storedRemotely) {
-                    setStorageStatus('Modo actual: guardado en Supabase y respaldo local.', 'ok');
-                }
-            } catch (error) {
-                setStorageStatus('No se pudo guardar en Supabase. Se guardo localmente en este navegador.', 'warn');
-            }
-
-            fillSummary(validatedValues);
-            formScreen.classList.add('hidden');
-            confirmationScreen.classList.remove('hidden');
-            infoPanel.classList.add('hidden');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-
-        newAppointmentButton.addEventListener('click', () => {
-            appointmentForm.reset();
-            clearAllErrors();
-            formScreen.classList.remove('hidden');
-            confirmationScreen.classList.add('hidden');
-            infoPanel.classList.remove('hidden');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-
-        Object.keys(fields).forEach((fieldName) => {
-            fields[fieldName].addEventListener('input', () => clearFieldError(fieldName));
-            fields[fieldName].addEventListener('change', () => clearFieldError(fieldName));
-        });
-
-        fechaInput.addEventListener('change', () => {
-            if (fechaInput.value && !isWeekday(fechaInput.value)) {
-                fechaInput.value = '';
-                showFieldError('fecha', 'Solo podés elegir dias de lunes a viernes.');
-                formAlert.textContent = 'La fecha seleccionada no es valida. Elegí un dia habil de lunes a viernes.';
-                formAlert.classList.remove('hidden');
-                scrollToFirstError();
-            }
-        });
-
-        document.addEventListener('change', (event) => {
-            if (event.target.name === 'examenes') {
-                const examError = document.querySelector('[data-error-for="examenes"]');
-                examError.textContent = '';
-                examError.classList.add('hidden');
-            }
-        });
-
-        buildTimeOptions();
-        buildExamOptions();
-        setMinDate();
-
-        if (hasSupabaseConfig()) {
-            setStorageStatus('Modo actual: Supabase configurado. Los turnos se guardan en la nube con respaldo local.', 'ok');
-        } else {
-            setStorageStatus('Modo actual: guardado local en este navegador. Configurá Supabase para centralizar turnos.', 'warn');
-        }
-    </script>
+        <script src="scripts/script.js"></script>
 </body>
 </html>
+
+
+
