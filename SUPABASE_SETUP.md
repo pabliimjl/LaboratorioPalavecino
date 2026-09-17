@@ -16,11 +16,18 @@
 - Si Supabase esta configurado, tambien inserta en `public.appointments`.
 - `turnos-reservados.html` intenta leer desde Supabase.
 - Si no hay config o falla la conexion, usa localStorage.
+- `contacto.html` guarda los mensajes en `public.contact_messages`.
+- `panel.html` muestra los mensajes recibidos desde Supabase.
 - `resultados.html` consulta `public.results` filtrando por DNI + `access_code`.
+
+## Mensajes de contacto
+
+El bloque de `contact_messages` incluido en `supabase-schema.sql` crea la tabla y sus politicas. Ejecuta nuevamente ese archivo completo en el SQL Editor de Supabase si el proyecto ya estaba configurado.
 
 ## Datos requeridos para resultados
 
 Al cargar un resultado en `public.results`, completar:
+
 - `appointment_id`: turno del paciente
 - `access_code`: codigo que se entrega al paciente
 - `pdf_path`: URL publica del PDF o ruta accesible
@@ -36,12 +43,13 @@ values (1, 'AB12CD34', 'https://tu-dominio.com/resultados/resultado-1.pdf', 'Per
 
 - Las politicas incluidas son de demo y dejan insertar/leer/editar/borrar con rol anon.
 - Para produccion, conviene:
-   - limitar edicion y borrado solo a admin,
+  - limitar edicion y borrado solo a admin,
   - agregar autenticacion para personal,
   - auditar cambios.
 
 ## Si ya ejecutaste el esquema antes
 
 Si las tablas ya estaban creadas, ejecuta nuevamente en SQL Editor el bloque de politicas para asegurar tambien:
+
 - `anon_update_appointments` y `anon_delete_appointments`
 - `anon_insert_results`, `anon_update_results` y `anon_delete_results`

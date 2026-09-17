@@ -199,6 +199,81 @@
         }
     }
 
+    function initContactoPage() {
+        if (!document.body.classList.contains('page-contacto')) {
+            return;
+        }
+
+        const contactForm = document.getElementById('contactForm');
+        const contactFormAlert = document.getElementById('contactFormAlert');
+        const submitButton = contactForm.querySelector('button[type="submit"]');
+        const supabaseConfig = window.SUPABASE_CONFIG || {};
+
+        function hasSupabaseConfig() {
+            return Boolean(
+                supabaseConfig.url &&
+                supabaseConfig.anonKey &&
+                !supabaseConfig.url.includes('TU_SUPABASE_URL') &&
+                !supabaseConfig.anonKey.includes('TU_SUPABASE_ANON_KEY')
+            );
+        }
+
+        function showAlert(message, tone) {
+            contactFormAlert.textContent = message;
+            contactFormAlert.className = 'rounded-xl px-4 py-3 text-sm';
+            contactFormAlert.classList.add(
+                tone === 'success' ? 'border' : 'border',
+                tone === 'success' ? 'border-emerald-200' : 'border-red-200',
+                tone === 'success' ? 'bg-emerald-50' : 'bg-red-50',
+                tone === 'success' ? 'text-emerald-800' : 'text-red-700'
+            );
+            contactFormAlert.classList.remove('hidden');
+        }
+
+        contactForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const name = document.getElementById('contactName').value.trim();
+            const emailInput = document.getElementById('contactEmail');
+            const email = emailInput.value.trim();
+            const message = document.getElementById('contactMessage').value.trim();
+
+            if (!name || !email || !message) {
+                showAlert('Completá nombre, email y mensaje.', 'error');
+                return;
+            }
+
+            if (!emailInput.checkValidity()) {
+                showAlert('Ingresá un email válido.', 'error');
+                return;
+            }
+
+            if (!hasSupabaseConfig() || !window.supabase) {
+                showAlert('El formulario no está disponible en este momento.', 'error');
+                return;
+            }
+
+            submitButton.disabled = true;
+            submitButton.textContent = 'Enviando...';
+
+            try {
+                const client = window.supabase.createClient(supabaseConfig.url, supabaseConfig.anonKey);
+                const { error } = await client.from('contact_messages').insert([{ name, email, message }]);
+                if (error) {
+                    throw error;
+                }
+
+                contactForm.reset();
+                showAlert('Mensaje enviado correctamente. Nos pondremos en contacto con vos.', 'success');
+            } catch (error) {
+                console.error('Error guardando mensaje de contacto:', error);
+                showAlert('No se pudo enviar el mensaje. Intentá nuevamente.', 'error');
+            } finally {
+                submitButton.disabled = false;
+                submitButton.textContent = 'Enviar mensaje';
+            }
+        });
+    }
+
     function initTurnosPage() {
         if (!document.body.classList.contains('page-turnos')) {
             return;
@@ -1104,6 +1179,9 @@
         const filterText = document.getElementById('filterText');
         const filterFecha = document.getElementById('filterFecha');
         const clearFiltersButton = document.getElementById('clearFilters');
+        const refreshMessagesButton = document.getElementById('refreshMessagesButton');
+        const messagesAlert = document.getElementById('messagesAlert');
+        const messagesList = document.getElementById('messagesList');
         const editModal = document.getElementById('editModal');
         const editAppointmentForm = document.getElementById('editAppointmentForm');
         const editModalAlert = document.getElementById('editModalAlert');
@@ -1152,6 +1230,7 @@
             buildEditTimeOptions();
             setEditMinDate();
             renderAppointments();
+            renderMessages();
         }
 
         function showLogin() {
@@ -1200,6 +1279,75 @@
                 supabaseClient = window.supabase.createClient(supabaseConfig.url, supabaseConfig.anonKey);
             }
             return supabaseClient;
+        }
+
+        function showMessagesAlert(message, tone) {
+            messagesAlert.textContent = message;
+            messagesAlert.className = 'mt-4 rounded-xl px-4 py-3 text-sm';
+            messagesAlert.classList.add(
+                tone === 'success' ? 'border-emerald-200' : 'border-red-200',
+                tone === 'success' ? 'bg-emerald-50' : 'bg-red-50',
+                tone === 'success' ? 'text-emerald-800' : 'text-red-700'
+            );
+            messagesAlert.classList.remove('hidden');
+        }
+
+        async function renderMessages() {
+            messagesList.innerHTML = '';
+            messagesAlert.classList.add('hidden');
+            const client = getSupabaseClient();
+
+            if (!client) {
+                showMessagesAlert('No se pudo conectar con Supabase para consultar los mensajes.', 'error');
+                return;
+            }
+
+            const { data, error } = await client
+                .from('contact_messages')
+                .select('id, name, email, message, created_at')
+                .order('created_at', { ascending: false });
+
+            if (error) {
+                showMessagesAlert('No se pudieron cargar los mensajes. Ejecutá la tabla contact_messages en Supabase.', 'error');
+                return;
+            }
+
+            if (!data || data.length === 0) {
+                const emptyMessage = document.createElement('p');
+                emptyMessage.className = 'rounded-2xl border border-dashed border-slate-200 bg-slate-50 px-4 py-5 text-sm text-slate-500';
+                emptyMessage.textContent = 'Todavía no hay mensajes recibidos.';
+                messagesList.appendChild(emptyMessage);
+                return;
+            }
+
+            data.forEach((message) => {
+                const card = document.createElement('article');
+                card.className = 'rounded-2xl border border-sky-100 bg-sky-50/40 px-4 py-4';
+
+                const header = document.createElement('div');
+                header.className = 'flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between';
+                const sender = document.createElement('div');
+                const name = document.createElement('p');
+                name.className = 'font-bold text-slate-900';
+                name.textContent = message.name;
+                const email = document.createElement('p');
+                email.className = 'text-sm text-sky-800';
+                email.textContent = message.email;
+                sender.append(name, email);
+
+                const date = document.createElement('time');
+                date.className = 'text-xs text-slate-500';
+                date.textContent = new Date(message.created_at).toLocaleString('es-AR', {
+                    day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'
+                });
+                header.append(sender, date);
+
+                const body = document.createElement('p');
+                body.className = 'mt-3 whitespace-pre-wrap text-sm leading-relaxed text-slate-700';
+                body.textContent = message.message;
+                card.append(header, body);
+                messagesList.appendChild(card);
+            });
         }
 
         function readAppointmentsLocal() {
@@ -1426,6 +1574,7 @@
         }
 
         refreshButton.addEventListener('click', renderAppointments);
+        refreshMessagesButton.addEventListener('click', renderMessages);
 
         async function deleteAppointment(appointmentId) {
             if (currentMode === 'remote') {
@@ -1815,6 +1964,7 @@
         bindMobileMenu();
         initScrollAnimations();
         initResultadosPage();
+        initContactoPage();
         initTurnosPage();
         initTurnosReservadosPage();
         initPanelPage();
