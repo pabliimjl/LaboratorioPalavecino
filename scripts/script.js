@@ -79,6 +79,8 @@
         }
 
         function setStorageStatus(message, tone) {
+            if (!storageStatus) return; // Add this safety check
+
             storageStatus.textContent = message;
             storageStatus.className = 'mb-5 rounded-xl px-4 py-3 text-sm';
 
@@ -88,7 +90,7 @@
             }
 
             storageStatus.classList.add('border', 'border-amber-200', 'bg-amber-50', 'text-amber-800');
-        }
+        }   
 
         function normalizeCode(value) {
             return value.trim().toUpperCase();
@@ -241,22 +243,38 @@
             hora: horaSelect
         };
 
-        function buildTimeOptions() {
-            for (let hour = 7; hour <= 10; hour += 1) {
-                for (let minute = 0; minute < 60; minute += 10) {
-                    if (hour === 10 && minute > 0) {
+        function getTimeValues() {
+            const timeValues = [];
+
+            for (let hour = 8; hour <= 10; hour += 1) {
+                for (let minute = 0; minute < 60; minute += 15) {
+                    if (hour === 10 && minute > 15) {
                         break;
                     }
 
                     const hourLabel = String(hour).padStart(2, '0');
                     const minuteLabel = String(minute).padStart(2, '0');
-                    const value = `${hourLabel}:${minuteLabel}`;
+                    timeValues.push(`${hourLabel}:${minuteLabel}`);
+                }
+            }
+
+            return timeValues;
+        }
+
+        function buildTimeOptions(occupiedTimes = []) {
+            horaSelect.innerHTML = '<option value="">Seleccioná un horario</option>';
+            const occupiedSet = new Set(occupiedTimes.map((time) => time.slice(0, 5)));
+
+            getTimeValues().forEach((value) => {
+                if (occupiedSet.has(value)) {
+                    return;
+                }
+
                     const option = document.createElement('option');
                     option.value = value;
                     option.textContent = value;
                     horaSelect.appendChild(option);
-                }
-            }
+            });
         }
 
         function buildExamOptions() {
@@ -354,7 +372,9 @@
             return supabaseClient;
         }
 
-        function setStorageStatus(message, tone) {
+       function setStorageStatus(message, tone) {
+            if (!storageStatus) return; // Add this safety check
+
             storageStatus.textContent = message;
             storageStatus.className = 'mt-4 rounded-xl px-4 py-3 text-sm';
 
@@ -389,6 +409,62 @@
             return appointment;
         }
 
+        function removeAppointmentLocal(appointmentId) {
+            const appointments = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+            const remainingAppointments = appointments.filter((appointment) => appointment.id !== appointmentId);
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(remainingAppointments));
+        }
+
+        function readOccupiedTimesLocal(dateValue) {
+            try {
+                const appointments = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+                return appointments
+                    .filter((appointment) => appointment.fecha === dateValue)
+                    .map((appointment) => appointment.hora);
+            } catch {
+                return [];
+            }
+        }
+
+        async function readOccupiedTimesRemote(dateValue) {
+            const client = getSupabaseClient();
+            if (!client) {
+                return null;
+            }
+
+            const { data, error } = await client
+                .from(REMOTE_TABLE)
+                .select('appointment_time')
+                .eq('appointment_date', dateValue);
+
+            if (error) {
+                return null;
+            }
+
+            return data.map((row) => row.appointment_time);
+        }
+
+        async function refreshAvailableTimes() {
+            if (!fechaInput.value || !isWeekday(fechaInput.value)) {
+                buildTimeOptions();
+                return;
+            }
+
+            const remoteTimes = await readOccupiedTimesRemote(fechaInput.value);
+            const occupiedTimes = remoteTimes || readOccupiedTimesLocal(fechaInput.value);
+            const selectedTime = horaSelect.value;
+            buildTimeOptions(occupiedTimes);
+
+            if (selectedTime && !occupiedTimes.includes(selectedTime)) {
+                horaSelect.value = selectedTime;
+            }
+
+            if (horaSelect.options.length === 1) {
+                formAlert.textContent = 'No hay turnos disponibles para esa fecha.';
+                formAlert.classList.remove('hidden');
+            }
+        }
+
         async function saveAppointmentRemote(values) {
             const client = getSupabaseClient();
             if (!client) {
@@ -410,6 +486,12 @@
             }
 
             return true;
+        }
+
+        async function isTimeOccupied(values) {
+            const remoteTimes = await readOccupiedTimesRemote(values.fecha);
+            const occupiedTimes = remoteTimes || readOccupiedTimesLocal(values.fecha);
+            return occupiedTimes.includes(values.hora);
         }
 
         function scrollToFirstError() {
@@ -540,13 +622,33 @@
                 return;
             }
 
-            saveAppointmentLocal(validatedValues);
+            if (await isTimeOccupied(validatedValues)) {
+                buildTimeOptions(await readOccupiedTimesRemote(validatedValues.fecha) || readOccupiedTimesLocal(validatedValues.fecha));
+                showFieldError('hora', 'Ese horario ya está ocupado. Elegí otro disponible.');
+                formAlert.textContent = 'Ese horario ya está ocupado. Elegí otro disponible.';
+                formAlert.classList.remove('hidden');
+                scrollToFirstError();
+                return;
+            }
+
+            const localAppointment = saveAppointmentLocal(validatedValues);
             try {
                 const storedRemotely = await saveAppointmentRemote(validatedValues);
                 if (storedRemotely) {
                     setStorageStatus('Modo actual: guardado en Supabase y respaldo local.', 'ok');
                 }
-            } catch {
+            } catch (error) {
+                if (error.code === '23505') {
+                    removeAppointmentLocal(localAppointment.id);
+                    const occupiedTimes = await readOccupiedTimesRemote(validatedValues.fecha) || [];
+                    buildTimeOptions(occupiedTimes);
+                    showFieldError('hora', 'Ese horario ya está ocupado. Elegí otro disponible.');
+                    formAlert.textContent = 'Ese horario ya está ocupado. Elegí otro disponible.';
+                    formAlert.classList.remove('hidden');
+                    scrollToFirstError();
+                    return;
+                }
+
                 setStorageStatus('No se pudo guardar en Supabase. Se guardo localmente en este navegador.', 'warn');
             }
 
@@ -578,7 +680,10 @@
                 formAlert.textContent = 'La fecha seleccionada no es valida. Elegí un dia habil de lunes a viernes.';
                 formAlert.classList.remove('hidden');
                 scrollToFirstError();
+                return;
             }
+
+            refreshAvailableTimes();
         });
 
         document.addEventListener('change', (event) => {
@@ -676,7 +781,7 @@
             const { data, error } = await client
                 .from(REMOTE_TABLE)
                 .select('id, first_name, last_name, dni, appointment_date, appointment_time, exams, created_at')
-                .order('created_at', { ascending: false });
+                .order('appointment_date', { ascending: false });
 
             if (error) {
                 return null;
@@ -726,9 +831,9 @@
         }
 
         function buildEditTimeOptions() {
-            for (let hour = 7; hour <= 10; hour += 1) {
-                for (let minute = 0; minute < 60; minute += 10) {
-                    if (hour === 10 && minute > 0) {
+            for (let hour = 8; hour <= 10; hour += 1) {
+                for (let minute = 0; minute < 60; minute += 15) {
+                    if (hour === 10 && minute > 15) {
                         break;
                     }
 
@@ -1112,7 +1217,7 @@
             const { data, error } = await client
                 .from(REMOTE_TABLE)
                 .select('id, first_name, last_name, dni, appointment_date, appointment_time, exams, created_at')
-                .order('appointment_date', { ascending: true });
+                .order('appointment_date', { ascending: false });
 
             if (error) return null;
 
@@ -1134,7 +1239,7 @@
             const { data, error } = await client
                 .from(RESULTS_TABLE)
                 .select('id, appointment_id, pdf_path, access_code, notes, created_at')
-                .order('created_at', { ascending: true });
+                .order('created_at', { ascending: false });
             if (error || !data) return {};
             const map = {};
             data.forEach((row) => {
@@ -1154,10 +1259,10 @@
         function setSourceUi(mode) {
             if (mode === 'remote') {
                 sourceBadge.textContent = 'Supabase';
-                sourceDescription.textContent = 'Mostrando turnos desde Supabase. Podés consultarlos desde cualquier dispositivo.';
+                //sourceDescription.textContent = 'Mostrando turnos desde Supabase. Podés consultarlos desde cualquier dispositivo.';
             } else {
                 sourceBadge.textContent = 'Registro local';
-                sourceDescription.textContent = 'Mostrando turnos guardados localmente en este navegador.';
+                //sourceDescription.textContent = 'Mostrando turnos guardados localmente en este navegador.';
             }
         }
 
@@ -1227,7 +1332,7 @@
             filtered.forEach((appointment) => {
                 const results = allResults[String(appointment.id)] || [];
                 const resultHtml = results.length > 0
-                    ? `<div class="mt-4 rounded-2xl bg-emerald-50 border border-emerald-200 px-4 py-3">
+                    ? `<div class="mt-4 rounded-2xl bg-emerald-40 border border-emerald-200 px-4 py-3">
                            <div class="flex items-center justify-between gap-3 flex-wrap">
                                <div class="flex items-center gap-2">
                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
@@ -1445,9 +1550,9 @@
 
         function buildEditTimeOptions() {
             editHora.innerHTML = '<option value="">Seleccioná un horario</option>';
-            for (let hour = 7; hour <= 10; hour++) {
-                for (let minute = 0; minute < 60; minute += 10) {
-                    if (hour === 10 && minute > 0) break;
+            for (let hour = 8; hour <= 10; hour++) {
+                for (let minute = 0; minute < 60; minute += 15) {
+                    if (hour === 10 && minute > 15) break;
                     const h = String(hour).padStart(2, '0');
                     const m = String(minute).padStart(2, '0');
                     const opt = document.createElement('option');

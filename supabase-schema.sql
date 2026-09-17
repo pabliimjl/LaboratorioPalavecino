@@ -13,6 +13,9 @@ create table if not exists public.appointments (
 create index if not exists idx_appointments_date_time
     on public.appointments (appointment_date, appointment_time);
 
+create unique index if not exists uq_appointments_date_time
+    on public.appointments (appointment_date, appointment_time);
+
 create index if not exists idx_appointments_dni
     on public.appointments (dni);
 

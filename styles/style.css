@@ -1,36 +1,38 @@
 :root {
     color-scheme: light;
+    --color-green-strong: #4d635f;
+    --color-green-light: #829995;
+    --color-green-light-transparent: rgba(130, 153, 149, 0.14);
+    --color-green-light-transparent-70: rgba(130, 153, 149, 0.7);
+    --color-green-strong-dark: #3b514b;
+    --tw-shadow-color-neutral: rgba(15, 23, 42, 0.08);
 }
 
 body {
     color: #0f172a;
 }
 
+.hero-overlay-green {
+    background: linear-gradient(90deg, rgba(130, 153, 149, 0.95) 0%, rgba(255, 255, 255, 0.92) 50%, rgba(130, 153, 149, 0.8) 100%);
+}
+
 body.page-main,
 body.page-turnos,
 body.page-panel,
 body.page-turnos-reservados {
-    background:
-        radial-gradient(circle at top left, rgba(16, 185, 129, 0.14), transparent 30%),
-        linear-gradient(180deg, #f0fdf4 0%, #f8fafc 42%, #ecfdf5 100%);
+    background-color: #829995;
 }
 
 body.page-contacto {
-    background:
-        radial-gradient(circle at top right, rgba(16, 185, 129, 0.14), transparent 28%),
-        linear-gradient(180deg, #f0fdf4 0%, #f8fafc 45%, #ecfdf5 100%);
+    background-color: #829995;
 }
 
 body.page-ooss {
-    background:
-        radial-gradient(circle at top left, rgba(16, 185, 129, 0.14), transparent 28%),
-        linear-gradient(180deg, #f0fdf4 0%, #f8fafc 45%, #ecfdf5 100%);
+    background-color: #829995;
 }
 
 body.page-resultados {
-    background:
-        radial-gradient(circle at top, rgba(16, 185, 129, 0.16), transparent 30%),
-        linear-gradient(180deg, #f0fdf4 0%, #f8fafc 48%, #ecfdf5 100%);
+    background-color: #829995;
 }
 
 .nav-link {
@@ -43,15 +45,15 @@ body.page-resultados {
 }
 
 .nav-link:hover {
-    background-color: #d1fae5;
-    color: #065f46;
+    background-color: #829995;
+    color: #4d635f;
 }
 
 .nav-link-active {
-    background-color: #059669;
+    background-color: #4d635f;
     color: #f8fafc;
     font-weight: 600;
-    box-shadow: 0 10px 24px rgba(5, 150, 105, 0.2);
+    box-shadow: 0 10px 24px rgba(77, 99, 95, 0.2);
 }
 
 #mainMenuMobile {
@@ -98,17 +100,73 @@ body.page-resultados {
 }
 
 body.page-main #especialidades .grid > div:hover {
-    background-color: #ecfdf5;
-    border-color: #34d399;
+    background-color: #829995;
+    border-color: #829995;
     transform: translateY(-4px);
-    box-shadow: 0 18px 40px rgba(16, 185, 129, 0.16);
+    box-shadow: 0 18px 40px rgba(130, 153, 149, 0.16);
 }
 
 body.page-main #especialidades .grid > div:hover h3 {
-    color: #064e3b;
+    color: #4d635f;
 }
 
 .field-error {
     border-color: #ef4444;
     box-shadow: 0 0 0 1px rgba(239, 68, 68, 0.2);
+}
+
+/* Override Tailwind emerald utilities with the new custom green palette */
+.bg-emerald-50 {
+    background-color: var(--color-green-light) !important;
+}
+.bg-emerald-50\/70,
+.from-emerald-50,
+.from-emerald-50\/95,
+.to-emerald-100,
+.to-emerald-100\/80,
+.via-emerald-100,
+.bg-emerald-50\/95 {
+    background-color: var(--color-green-light) !important;
+}
+.border-emerald-100,
+.border-emerald-200 {
+    border-color: var(--color-green-light) !important;
+}
+.text-emerald-700,
+.text-emerald-800,
+.text-emerald-900 {
+    color: var(--color-green-strong) !important;
+}
+.bg-emerald-600 {
+    background-color: var(--color-green-strong) !important;
+}
+.hover\:bg-emerald-50:hover {
+    background-color: var(--color-green-light) !important;
+}
+.hover\:bg-emerald-700:hover {
+    background-color: var(--color-green-strong-dark) !important;
+}
+.hover\:text-white:hover {
+    color: #f8fafc !important;
+}
+.focus\:ring-emerald-500:focus,
+.ring-emerald-500 {
+    --tw-ring-color: var(--color-green-strong) !important;
+}
+.shadow-emerald-100\/40,
+.shadow-emerald-100\/50,
+.shadow-emerald-100\/60,
+.shadow-emerald-100\/70,
+.shadow-emerald-200,
+.shadow-emerald-200\/50 {
+    --tw-shadow-color: var(--tw-shadow-color-neutral);
+}
+
+#inicio >div>div> h1{
+    color: white;
+    font-family:Relicta;
+}
+
+.mt-4 rounded-2xl bg-emerald-50 border border-emerald-200 px-4 py-3{
+    background-color: white;
 }
