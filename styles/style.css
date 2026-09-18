@@ -66,6 +66,65 @@ body.page-resultados {
     max-height: 400px;
 }
 
+@media (max-width: 767px) {
+    header nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.5rem;
+        min-height: 64px;
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+
+    header nav > a {
+        width: auto !important;
+        max-width: 72%;
+        height: auto !important;
+        min-width: 0;
+        margin: 0 !important;
+        flex: 1 1 auto;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+    }
+
+    header nav > a img {
+        width: 100% !important;
+        max-width: 260px;
+        height: auto !important;
+        min-width: 0;
+        max-height: 64px;
+        margin: 0 !important;
+        border-radius: 0.7rem;
+        object-fit: contain;
+        background-color: #f4f5f7 !important;
+        display: block;
+    }
+
+    #menuToggle {
+        width: 48px !important;
+        height: 48px !important;
+        min-width: 48px;
+        min-height: 48px;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        padding: 0 !important;
+        border-radius: 9999px !important;
+        flex-shrink: 0;
+        background-color: rgba(130, 153, 149, 0.12);
+        border: 1px solid rgba(77, 99, 95, 0.18);
+        box-shadow: none;
+        align-self: center;
+    }
+
+    #menuToggle svg {
+        width: 22px;
+        height: 22px;
+        stroke-width: 2;
+    }
+}
+
 .aos {
     opacity: 0;
     transform: translateY(32px);

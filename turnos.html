@@ -52,18 +52,13 @@
                     <div class="mt-8 rounded-2xl border border-emerald-100 bg-emerald-50/70 p-5">
                         <h2 class="text-lg font-bold text-slate-900">Especialidades disponibles</h2>
                         <ul class="mt-4 grid gap-2 text-sm text-slate-700 sm:grid-cols-2">
-                            <li>Marcadores Tumorales</li>
-                            <li>Endocrinología, Metabolismo y Nutrición</li>
-                            <li>Bacteriología</li>
-                            <li>Oncología</li>
-                            <li>Cardiología</li>
-                            <li>Marcadores Biológicos</li>
-                            <li>Inmunología</li>
-                            <li>Alergias</li>
-                            <li>Fertilidad</li>
-                            <li>Reumatología</li>
-                            <li>Pediatría</li>
-                            <li>Micología</li>
+                            <li>Análisis de rutina</li>
+                            <li>Endocrinología</li>
+                            <li>Vitaminas y Minerales</li>
+                            <li>Marcadores tumorales</li>
+                            <li>Medicina Laboral</li>
+                            <li>Otras especialidades</li>
+
                         </ul>
                     </div>
                 </div>
@@ -126,6 +121,12 @@
                                 <p class="mt-2 text-sm text-red-600 hidden" data-error-for="examenes"></p>
                             </div>
 
+                            <div id="preparacionIndicaciones" class="hidden mt-6 rounded-2xl border border-emerald-100 bg-emerald-50/60 p-4">
+                                <h3 class="text-sm font-bold uppercase tracking-[0.14em] text-emerald-700">Indicaciones previas</h3>
+                                <p id="preparacionAyuno" class="mt-3 text-sm font-semibold text-slate-800"></p>
+                                <ul id="preparacionLista" class="mt-3 space-y-2 text-sm text-slate-700"></ul>
+                            </div>
+
                             <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between rounded-2xl border border-emerald-100 bg-emerald-50/60 px-4 py-4">
                                 <p class="text-sm text-slate-600">Antes de confirmar, revisá que el nombre, DNI, fecha, horario y estudios sean correctos.</p>
                                 <button type="submit" class="inline-flex items-center justify-center rounded-xl bg-emerald-600 px-6 py-3 font-bold text-white shadow-lg shadow-emerald-200 transition-colors hover:bg-emerald-700">Confirmar turno</button>
@@ -168,6 +169,12 @@
                             <div class="mt-4 rounded-2xl bg-slate-50 px-4 py-4">
                                 <h4 class="text-sm font-semibold text-slate-500">Examenes seleccionados</h4>
                                 <ul id="summaryExamenes" class="mt-2 flex flex-wrap gap-2"></ul>
+                            </div>
+
+                            <div class="mt-6 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-4">
+                                <h4 class="text-sm font-bold uppercase tracking-[0.12em] text-amber-800">Recordá:</h4>
+                                <p id="summaryAyuno" class="mt-2 text-sm font-semibold text-slate-800"></p>
+                                <ul id="summaryIndicaciones" class="mt-3 space-y-2 text-sm text-slate-700"></ul>
                             </div>
 
                             <div class="mt-6 flex flex-wrap gap-3 justify-center sm:justify-between">

@@ -38,6 +38,84 @@
         animatedElements.forEach((el) => observer.observe(el));
     }
 
+    const specialtyCatalog = {
+        laboral: {
+            title: 'Medicina Laboral',
+            items: ['Exámenes preocupacionales', 'Examenes periódicos', 'Estudios toxicológicos']
+        },
+        rutina: {
+            title: 'Análisis de Rutina',
+            items: ['Hemograma', 'Glucemia', 'Uremia', 'Creatinina', 'Hepatograma', 'Ionograma', 'Coagulograma', 'Orina completa', 'Perfil lipídico', 'Consultar por otros análisis de rutina']
+        },
+        endocrinologia: {
+            title: 'Endocrinología',
+            items: ['TSH, T4, T4 Libre, T3', 'FSH, LH', 'Estradiol(E2)', 'Progesterona', 'Prolactina', 'Testosterona', 'β HCG', 'Cortisol', 'Consultar por otras determinaciones hormonales']
+        },
+        vitaminas: {
+            title: 'Vitaminas y Minerales',
+            items: ['Vitamina D', 'Vitamina B12', 'Acido Fólico', 'Hierro', 'Ferritina', 'Transferrina', 'Calcio', 'Fosforo', 'Magnesio', 'Zinc', 'Consultar por otras vitaminas y minerales']
+        },
+        marcadorestumorales: {
+            title: 'Marcadores tumorales',
+            items: ['PSA-Total y PSA-Libre', 'CA 19-9', 'CA 125', 'CA 15-3', 'CEA', 'Consultar por otros marcadores tumorales']
+        },
+        otrosanalisis: {
+            title: 'Otras especialidades',
+            items: ['Alergias', 'Inmunología', 'Serología', 'Microbiología', 'Consultar por más especialidades']
+        }
+    };
+
+    function initSpecialtyModal() {
+        const modal = document.getElementById('specialtyModal');
+        const closeButton = document.getElementById('closeSpecialtyModal');
+        const modalTitle = document.getElementById('specialtyModalTitle');
+        const modalList = document.getElementById('specialtyModalList');
+        const specialtyButtons = document.querySelectorAll('[data-specialty]');
+
+        if (!modal || !closeButton || !modalTitle || !modalList || !specialtyButtons.length) {
+            return;
+        }
+
+        function closeModal() {
+            modal.classList.add('hidden');
+            document.body.classList.remove('overflow-hidden');
+        }
+
+        specialtyButtons.forEach((button) => {
+            button.addEventListener('click', () => {
+                const details = specialtyCatalog[button.dataset.specialty];
+                if (!details) {
+                    return;
+                }
+
+                modalTitle.textContent = details.title;
+                modalList.innerHTML = '';
+                details.items.forEach((item) => {
+                    const listItem = document.createElement('li');
+                    listItem.className = 'rounded-xl border border-emerald-100 bg-emerald-50/60 px-4 py-3';
+                    listItem.textContent = item;
+                    modalList.appendChild(listItem);
+                });
+
+                modal.classList.remove('hidden');
+                document.body.classList.add('overflow-hidden');
+                closeButton.focus();
+            });
+        });
+
+        closeButton.addEventListener('click', closeModal);
+        modal.addEventListener('click', (event) => {
+            if (event.target === modal) {
+                closeModal();
+            }
+        });
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && !modal.classList.contains('hidden')) {
+                closeModal();
+            }
+        });
+    }
+
     function initResultadosPage() {
         if (!document.body.classList.contains('page-resultados')) {
             return;
@@ -279,20 +357,23 @@
             return;
         }
 
-        const specialties = [
-            'Marcadores Tumorales',
-            'Endocrinología, Metabolismo y Nutrición',
-            'Bacteriología',
-            'Oncología',
-            'Cardiología',
-            'Marcadores Biológicos',
-            'Inmunología',
-            'Alergias',
-            'Fertilidad',
-            'Reumatología',
-            'Pediatría',
-            'Micología'
-        ];
+        const specialtyOrder = ['rutina', 'endocrinologia', 'vitaminas', 'laboral', 'marcadorestumorales', 'otrosanalisis'];
+
+        const preparacionesEspeciales = {
+            'Perfil lipídico': 'Ayuno de 12 horas. Realizar una cena liviana la noche anterior, evitando grasas, frituras y alcohol.',
+            'Orina completa': 'Primera orina de la mañana. Realizar higiene previa y recolectar chorro medio.',
+            'TSH, T4, T4 Libre, T3': 'Si toma medicación, realizar la extracción antes de tomar la dosis del día, salvo indicación médica diferente.',
+            'FSH, LH': 'El día del ciclo menstrual puede ser importante según indicación médica.',
+            'Estradiol(E2)': 'El día del ciclo menstrual puede ser importante según indicación médica.',
+            'Progesterona': 'El día del ciclo menstrual es fundamental según indicación médica.',
+            'Prolactina': 'Reposo de 20 a 30 minutos antes de la extracción.',
+            'Testosterona': 'Realizar preferentemente por la mañana, entre las 8:00 y 10:00AM.',
+            'Cortisol': 'Realizar en el horario entre las 8:00AM y 9:00AM.',
+            'PSA-Total y PSA-Libre': 'Evitar eyaculación y ciclismo aproximadamente 48 horas antes.',
+            'Alergias': 'Algunos estudios pueden requerir suspensión previa de antihistamínicos. Consultar antes de suspender medicación.',
+            'Microbiología': 'La preparación depende del tipo de muestra solicitada.',
+            'Estudios toxicológicos': 'La preparación depende de la sustancia y del tipo de muestra solicitada.'
+        };
 
         const appointmentForm = document.getElementById('appointmentForm');
         const formAlert = document.getElementById('formAlert');
@@ -353,15 +434,37 @@
         }
 
         function buildExamOptions() {
-            specialties.forEach((specialty, index) => {
-                const label = document.createElement('label');
-                label.className = 'flex items-start gap-3 rounded-2xl border border-emerald-100 bg-white px-4 py-3 text-sm text-slate-700 shadow-sm hover:border-emerald-300 hover:bg-emerald-50/40';
-                label.innerHTML = `
-                    <input type="checkbox" name="examenes" value="${specialty}" class="mt-1 h-4 w-4 rounded border-emerald-300 text-emerald-600 focus:ring-emerald-500" />
-                    <span>${specialty}</span>
-                `;
-                label.style.transitionDelay = `${index * 0.02}s`;
-                examGrid.appendChild(label);
+            specialtyOrder.forEach((key, sectionIndex) => {
+                const details = specialtyCatalog[key];
+                if (!details) {
+                    return;
+                }
+
+                const section = document.createElement('div');
+                section.className = 'rounded-2xl border border-emerald-100 bg-white p-4 shadow-sm';
+                section.style.transitionDelay = `${sectionIndex * 0.04}s`;
+
+                const heading = document.createElement('h3');
+                heading.className = 'mb-3 text-sm font-bold uppercase tracking-[0.14em] text-emerald-700';
+                heading.textContent = details.title;
+                section.appendChild(heading);
+
+                const itemList = document.createElement('div');
+                itemList.className = 'grid gap-2';
+
+                details.items.forEach((item, itemIndex) => {
+                    const label = document.createElement('label');
+                    label.className = 'flex items-start gap-3 rounded-xl border border-emerald-100 bg-emerald-50/30 px-3 py-2 text-sm text-slate-700 hover:border-emerald-300 hover:bg-emerald-50';
+                    label.style.transitionDelay = `${(sectionIndex + 1) * 0.03 + itemIndex * 0.01}s`;
+                    label.innerHTML = `
+                        <input type="checkbox" name="examenes" value="${item}" class="mt-1 h-4 w-4 rounded border-emerald-300 text-emerald-600 focus:ring-emerald-500" />
+                        <span>${item}</span>
+                    `;
+                    itemList.appendChild(label);
+                });
+
+                section.appendChild(itemList);
+                examGrid.appendChild(section);
             });
         }
 
@@ -419,6 +522,77 @@
 
         function getSelectedExams() {
             return Array.from(document.querySelectorAll('input[name="examenes"]:checked')).map((checkbox) => checkbox.value);
+        }
+
+        function normalizeExamKey(value) {
+            return (value || '')
+                .toLowerCase()
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
+                .replace(/[^a-z0-9]+/g, '')
+                .trim();
+        }
+
+        function getPreparacionIndicaciones(examenes) {
+            const selected = [...new Set(examenes.filter(Boolean))];
+            if (!selected.length) {
+                return { horasAyuno: 8, instrucciones: [] };
+            }
+
+            const horasAyuno = selected.some((exam) => normalizeExamKey(exam) === 'perfillipidico') ? 12 : 8;
+            const instrucciones = [];
+
+            selected.forEach((exam) => {
+                const match = Object.keys(preparacionesEspeciales).find((key) => normalizeExamKey(key) === normalizeExamKey(exam));
+                if (match) {
+                    instrucciones.push(preparacionesEspeciales[match]);
+                }
+            });
+
+            return {
+                horasAyuno,
+                instrucciones: [...new Set(instrucciones)]
+            };
+        }
+
+        function renderPreparaciones() {
+            const panel = document.getElementById('preparacionIndicaciones');
+            const ayunoText = document.getElementById('preparacionAyuno');
+            const list = document.getElementById('preparacionLista');
+
+            if (!panel || !ayunoText || !list) {
+                return;
+            }
+
+            const selectedExams = getSelectedExams();
+            if (!selectedExams.length) {
+                panel.classList.add('hidden');
+                ayunoText.textContent = '';
+                list.innerHTML = '';
+                return;
+            }
+
+            const { horasAyuno, instrucciones } = getPreparacionIndicaciones(selectedExams);
+            ayunoText.textContent = `Ayuno recomendado: ${horasAyuno} horas.`;
+            list.innerHTML = '';
+
+            if (horasAyuno === 12) {
+                const general = document.createElement('li');
+                general.textContent = 'Se recomienda evitar alimentos sólidos durante 12 horas para los estudios que lo exigen.';
+                list.appendChild(general);
+            } else {
+                const general = document.createElement('li');
+                general.textContent = 'Se recomienda mantener ayuno de 8 horas. Podés tomar agua en forma habitual, salvo indicación contraria.';
+                list.appendChild(general);
+            }
+
+            instrucciones.forEach((instruccion) => {
+                const item = document.createElement('li');
+                item.textContent = instruccion;
+                list.appendChild(item);
+            });
+
+            panel.classList.remove('hidden');
         }
 
         function formatDate(dateValue) {
@@ -688,6 +862,34 @@
                 item.textContent = exam;
                 summaryExamenes.appendChild(item);
             });
+
+            const { horasAyuno, instrucciones } = getPreparacionIndicaciones(values.examenes);
+            const summaryAyuno = document.getElementById('summaryAyuno');
+            const summaryIndicaciones = document.getElementById('summaryIndicaciones');
+
+            if (summaryAyuno) {
+                summaryAyuno.textContent = `Ayuno recomendado: ${horasAyuno} horas.`;
+            }
+
+            if (summaryIndicaciones) {
+                summaryIndicaciones.innerHTML = '';
+
+                if (horasAyuno === 12) {
+                    const general = document.createElement('li');
+                    general.textContent = 'Se recomienda evitar alimentos sólidos durante 12 horas para los estudios que lo requieren.';
+                    summaryIndicaciones.appendChild(general);
+                } else {
+                    const general = document.createElement('li');
+                    general.textContent = 'Se recomienda mantener ayuno de 8 horas. Podés tomar agua en forma habitual, salvo indicación contraria.';
+                    summaryIndicaciones.appendChild(general);
+                }
+
+                instrucciones.forEach((instruccion) => {
+                    const item = document.createElement('li');
+                    item.textContent = instruccion;
+                    summaryIndicaciones.appendChild(item);
+                });
+            }
         }
 
         appointmentForm.addEventListener('submit', async (event) => {
@@ -766,11 +968,13 @@
                 const examError = document.querySelector('[data-error-for="examenes"]');
                 examError.textContent = '';
                 examError.classList.add('hidden');
+                renderPreparaciones();
             }
         });
 
         buildTimeOptions();
         buildExamOptions();
+        renderPreparaciones();
         setMinDate();
 
         if (hasSupabaseConfig()) {
@@ -1963,6 +2167,7 @@
     function initPageScripts() {
         bindMobileMenu();
         initScrollAnimations();
+        initSpecialtyModal();
         initResultadosPage();
         initContactoPage();
         initTurnosPage();
