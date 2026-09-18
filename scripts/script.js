@@ -193,9 +193,9 @@
         newSearchButton.addEventListener('click', showLoginScreen);
 
         if (hasSupabaseConfig()) {
-            setStorageStatus('Modo actual: consulta online con Supabase por DNI + código.', 'ok');
+            //setStorageStatus('Modo actual: consulta online con Supabase por DNI + código.', 'ok');
         } else {
-            setStorageStatus('Modo actual: completá SUPABASE_CONFIG para consultar resultados.', 'warn');
+           // setStorageStatus('Modo actual: completá SUPABASE_CONFIG para consultar resultados.', 'warn');
         }
     }
 
@@ -710,7 +710,7 @@
             try {
                 const storedRemotely = await saveAppointmentRemote(validatedValues);
                 if (storedRemotely) {
-                    setStorageStatus('Modo actual: guardado en Supabase y respaldo local.', 'ok');
+                    //setStorageStatus('Modo actual: guardado en Supabase y respaldo local.', 'ok');
                 }
             } catch (error) {
                 if (error.code === '23505') {
@@ -724,7 +724,7 @@
                     return;
                 }
 
-                setStorageStatus('No se pudo guardar en Supabase. Se guardo localmente en este navegador.', 'warn');
+                //setStorageStatus('No se pudo guardar en Supabase. Se guardo localmente en este navegador.', 'warn');
             }
 
             fillSummary(validatedValues);
@@ -774,9 +774,9 @@
         setMinDate();
 
         if (hasSupabaseConfig()) {
-            setStorageStatus('Modo actual: Supabase configurado. Los turnos se guardan en la nube con respaldo local.', 'ok');
+            //setStorageStatus('Modo actual: Supabase configurado. Los turnos se guardan en la nube con respaldo local.', 'ok');
         } else {
-            setStorageStatus('Modo actual: guardado local en este navegador. Configurá Supabase para centralizar turnos.', 'warn');
+           // setStorageStatus('Modo actual: guardado local en este navegador. Configurá Supabase para centralizar turnos.', 'warn');
         }
     }
 
